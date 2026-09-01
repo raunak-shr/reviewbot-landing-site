@@ -222,26 +222,25 @@ components:
 >   grey; `.run__stage>*{min-width:0}` with `table-layout:fixed` on `.ledger`
 >   below 820px; one masthead action at every width, with the certificate moved
 >   into the nav as a sixth anchor.
-> - **CTAs** are `Read the architecture` and `The design doc`. The first now resolves
->   in-site (see Buttons); the second is still a relative `.md` path that only works
->   while the page is served from inside the repo tree.
+> - ~~**CTAs** are `Read the architecture` and `The design doc`.~~ Both are gone; see
+>   the fifth pass and *Buttons*.
 
 
-> **Third pass — the architecture sheet, 2026-09-01.** The document is now two
-> sheet-sets, not one, and the shared half of the stylesheet has been lifted out
-> of `index.html`. Where this file still describes one self-contained page, read
-> the list below first.
+> **Third pass — the shared stylesheet, 2026-09-01.** The shared half of the
+> stylesheet has been lifted out of `index.html`. Where this file still describes
+> one self-contained page, read the list below first.
+>
+> This pass also added an architecture sheet, **which the fifth pass removed
+> again.** Its components are gone from the build; the entries below that still
+> describe them are marked.
 >
 > - **`base.css` is the system.** Tokens, reset, type scale, `.wrap`, the buttons,
 >   the motion primitive, `.form` and every part of it, `.log`, `.plc`, `.placard`,
 >   `.check`, `.panel`, `.code`, `.annot`, `.stamp`, `.sch`, the masthead, `.sec` /
 >   `.rulebar`, the footer and the utilities all moved there verbatim, in their
 >   original cascade order. `index.html` keeps four inline blocks for what only it
->   uses; `architecture.html` keeps one. **A token is edited in `base.css` and
->   nowhere else.**
-> - **A second surface: `architecture.html`.** Five sheets, each opening on a
->   schematic, mode Read. It inherits the world whole and adds five components of
->   its own — see *Components added by the architecture sheet*.
+>   uses. **A token is edited in `base.css` and nowhere else.**
+> - ~~**A second surface: `architecture.html`.**~~ Removed in the fifth pass.
 > - **The Flush-Left Rule was half a rule and it shipped as a defect.** Content
 >   sits flush to the rule that *starts* its column — but a cell that *follows* a
 >   rule was also getting `padding-left: 0`, so its first character sat on the
@@ -257,8 +256,8 @@ components:
 >   flow, so an overlong frame used to take the structured log's seventh row down
 >   with it. If a screen is ever too short it is the frame that gives.
 > - **The footer's Documents column is gone**, replaced by the bill of materials.
-> - **Sheet counts:** the overview is 8 sheets, the architecture sheet is 5, the
->   demo request is 1. They are separate documents and their counts do not interact.
+> - **Sheet counts:** the overview is 8 sheets, the demo request is 1. They are
+>   separate documents and their counts do not interact.
 >
 > **Fourth pass — the demo request, 2026-09-01.**
 >
@@ -269,16 +268,31 @@ components:
 >   throughout: `northwind/frontend`, `northwind/backend`,
 >   `@northwind-co/reviewbot`. It is placeholder data and should stay obviously
 >   so; if it ever needs changing again, the strings live in `index.html`,
->   `architecture.html`, `app.js` and both files under `docs/`.
+>   `app.js` and `docs/PRODUCT.md`.
 > - **The call to action was re-ranked.** A Persuade sheet's masthead CTA is the
 >   conversion action, not a document, so "Request a demo" now holds the primary
->   on the masthead, the hero and the certificate, and "Read the architecture"
->   drops to the ghost beside it. The design-doc link left both rows: two actions
->   contrasting in kind beats three competing for the same click.
+>   on the masthead, the hero and the certificate.
+>
+> **Fifth pass — the architecture sheet removed, 2026-09-01.** `architecture.html`
+> and `docs/architecture.md` are deleted, along with every nav link, cross-reference
+> and call to action that pointed at them. Consequences worth knowing:
+>
+> - **The document is two sheets again:** the overview and the demo request.
+> - **`index.html`'s nav has no cross-reference left** — six in-page jumps and the
+>   CTA. `.mast__nav-x` survives because the demo sheet still uses it to point back.
+> - **Both CTA rows changed.** The hero pairs "Request a demo" with a ghost that
+>   jumps to `#run` rather than leaving the page; the certificate closes on the
+>   single action alone, because the end of the argument is not the place to offer
+>   a second door out.
+> - **`.plate2`, `.notes`, `.pair`, `.mtx`, `.sch .head`, `.sch .tag`, `.box--hard`,
+>   `.box--soft` and `.wire--soft` went with the sheet.** `.sch` itself stays in
+>   `base.css`: the overview's own scrubbed schematic still uses it.
+> - **Nothing on either page now links outside the repo root**, which is what makes
+>   the build deployable to a static host unchanged.
 
 **Scope.** This file records the visual system of the ReviewBot landing document:
-`index.html` (the overview, 8 sheets, mode Persuade), `architecture.html` (the build
-spec, 5 sheets, mode Read), the shared `base.css`, and the one scroll engine in
+`index.html` (the overview, 8 sheets, mode Persuade), `demo.html` (the demo request,
+1 sheet, mode Persuade), the shared `base.css`, and the one scroll engine in
 `app.js`. No build step and no dependencies. It governs those surfaces and nothing else. It does **not** govern the repo's existing dashboard under
 `frontend/`, which is a separate and older visual system with its own tokens in
 `frontend/src/styles.css` (near-black + mint). The two are unrelated by intent; do not
@@ -702,17 +716,15 @@ finding chip means nobody is being held to it.
 - Icons are inline SVG at `1em` square with `flex: none`, stroked at 1.5–1.6. Six distinct shapes
   carry the whole page — arrow, document, clock, cross, tick, and the brand mark. There is no icon
   font and no glyph icon anywhere in the build.
-- **The pair is one action and one document, not one action twice.** Both call-to-action rows on
-  the page — the hero's and the certificate's — are the same two buttons: a primary "Read the
-  architecture" and a ghost "The design doc". The second is titled as the *thing* rather than as an
-  instruction, so the pair contrasts in kind instead of reading as two imperatives.
-- **"Read the architecture" is now an in-site link** to `architecture.html`, on both the hero
-  and the certificate, and so is the masthead CTA. It used to point at
-  `../reviewbot/docs/architecture.md`, which resolved only while the page was served from
-  inside the repo tree. The remaining `.md` targets — the design doc from both sheets, and
-  `docs/architecture.md` from the architecture sheet's own two buttons — still carry that
-  constraint: on a static host they 404, and a published version has to rewrite them.
-  The footer's four document links are gone with the Documents column.
+- **The pair contrasts in kind, and it is never one action twice.** A Persuade sheet's
+  masthead CTA is the conversion action, so "Request a demo" holds the primary on the
+  masthead, the hero and the certificate. The hero pairs it with a ghost that jumps to
+  `#run` — the page's own evidence, not a second imperative. The certificate closes on the
+  single action alone: the end of the argument is not where you offer a second door out.
+- **Nothing links outside the repo root.** Earlier passes pointed CTAs and footer links at
+  relative `.md` paths that only resolved while the page was served from inside a wider
+  repo tree; on a static host every one of them 404'd. They are all gone, and any new link
+  has to satisfy the same test.
 
 ### Forms (`.form`) — the signature component
 
@@ -875,8 +887,8 @@ blur(9px)` on a `--rule-2` bottom rule, min-height 52px. It gains its shadow onl
 `[data-stuck]` is set (scroll > 8px). It carries the mark, two `.f` metadata fields shown at
 ≥1000px with their entry rules stripped, a nav shown at ≥780px whose links draw a red `scaleX`
 underline on hover over 0.28s, and **two CTAs of which exactly one is ever visible**: `[data-wide]`
-is an in-page jump to the certificate, `[data-narrow]` is the page's primary action (read the
-architecture). They swap at 700px, because that is the width below which the hero's own action row
+is an in-page jump to the certificate, `[data-narrow]` is the page's primary action (request a
+demo). They swap at 700px, because that is the width below which the hero's own action row
 falls past the first screen — so the masthead stops being navigation and becomes the only action
 above the fold. Both are `.btn`, so the primary action is never a link that looks like a nav item. Its bottom edge is the document progress bar: a
 2px Placard Red line scaled by `--doc`, which the scroll loop writes on `<html>` every frame.
@@ -928,31 +940,6 @@ mono note. It replaced the footer's Documents column.
   sits *beside* the name on its baseline, not stacked above it, because a part number sits
   beside a part and a tile of icon-over-heading is the card shape this world refuses.
 
-### Components added by the architecture sheet
-
-Five, all in `architecture.html`'s own `<style>`, all built from the shared world:
-
-- **`.plate2`** — a drawing on the page. Structurally a `.form` (same stock, same head
-  strip, same sheet lift) whose body holds a `.sch-scroll` and a `.plate2__cap`. The
-  caption sits on a dashed rule, because it is a note about the drawing rather than part
-  of it.
-- **`.sch-scroll > svg` now takes `max-width: var(--natw)`**, set inline per figure to
-  that figure's own viewBox width. A schematic drawn at 900 units is finished at 900
-  pixels; past it the plate is only magnifying line work. Below its natural width the
-  existing `min-width` floor takes over and the drawing scrolls in its channel.
-- **`.sch .head`** (10.5px stencil column heads on a hairline) and **`.sch .tag`** (10px
-  mono, `--ink-3`) — the two annotation roles a static drawing needs that the scrubbed
-  schematic never did. **`.box--hard`** is the emphasised node, **`.box--soft`** and
-  **`.wire--soft`** are dashed: shared state and non-flow, per the Dashed-Line Rule.
-  Arrowheads are a `<marker>` in `--rule-2`, one `defs` per figure.
-- **`.notes`** (three ruled cells under a drawing) and **`.pair`** (two) — both follow the
-  corrected Flush-Left Rule. Their headings are `h3`, not `h4`: the sheet's own `h2` is
-  the last heading before them and skipping a level is an accessibility defect, not a
-  type choice.
-- **`.mtx`** — the ruled matrix. Same hand as `.log`, but its first column is
-  `white-space: nowrap` (a run type is one token) and `overflow-wrap: anywhere` is scoped
-  to ≤820px, where shrinking min-content width is worth more than an unbroken identifier.
-
 ### Writable Fields (`.fi`) — the input layer
 
 The demo sheet is the first surface here with blanks a person fills in rather than values
@@ -988,16 +975,18 @@ the line is the entire control.**
 
 ### Masthead cross-reference (`.mast__nav-x`)
 
-The seventh nav item is not a seventh section — it is the other document. It carries a
+A nav item that leaves the page is not another section of it. `.mast__nav-x` carries a
 1px `::before` rule at its left, Log Ink instead of Entry Ink, and a 0.72em out-arrow that
-shifts 1px up and right on hover. The in-page jumps stay Entry Ink with the red underline.
-Two consequences: `.mast__nav a` is now `white-space: nowrap` (a wrapping nav item stops
-being a tab and becomes two lines of prose), and `.mast__meta` moved from ≥1000px to
-≥1460px, because seven items plus a CTA need the width the metadata fields were using.
+shifts 1px up and right on hover; the in-page jumps stay Entry Ink with the red underline.
+`:first-child` drops the rule and its left padding, because the rule separates an off-page
+link from the in-page jumps *before* it and first in the row there is nothing to separate.
 
-The demo sheet's nav is **two** cross-references and no in-page jumps, so `:first-child`
-drops the leading rule and its left padding. The rule separates an off-page link from the
-in-page jumps before it; first in the row there is nothing to separate it from.
+**Only the demo sheet uses it now** — one item, pointing back to the overview — since the
+overview's own cross-reference went with the architecture sheet. Two rules it left behind
+are worth keeping: `.mast__nav a` is `white-space: nowrap` (a wrapping nav item stops being
+a tab and becomes two lines of prose), and `.mast__meta` sits at ≥1460px rather than
+≥1000px. The second is now more headroom than the strip needs; tighten it only after
+measuring the row at 1200px, not on the assumption that it is free.
 
 ### Where the system is thin or unresolved
 

@@ -142,7 +142,7 @@ function frame() {
     const b = boxes.get(el); if (!b) continue;
     // Writing an unchanged custom property still invalidates that subtree's
     // style, so a settled element is skipped rather than re-set every frame.
-    const p = map(y + vh * .94 - b.top, 0, Math.min(b.h * .5, 260) + 120).toFixed(3);
+    const p = map(y + vh * .92 - b.top, 0, Math.min(b.h * .6, 420) + 260).toFixed(3);
     if (p !== b.p) { b.p = p; el.style.setProperty('--p', p); }
   }
   // Under reduced motion the pinned tracks are collapsed to auto height, so a
@@ -155,7 +155,7 @@ function frame() {
       const usable = Math.max(1, s.h - s.stageH);
       p = clamp((y - s.top) / usable);
     } else {
-      p = map(y + vh * .88 - s.top, 0, s.h * .62 + vh * .28);
+      p = map(y + vh * .86 - s.top, 0, s.h * .95 + vh * .5);
     }
     const ps = p.toFixed(4);
     if (ps !== s.ps) { s.ps = ps; s.el.style.setProperty('--p', ps); }

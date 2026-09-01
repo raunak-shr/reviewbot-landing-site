@@ -1,18 +1,16 @@
 # ReviewBot — landing document
 
-A three-sheet static site for ReviewBot, aimed at engineers and engineering
+A two-sheet static site for ReviewBot, aimed at engineers and engineering
 leaders reading it as a portfolio piece. No build step, no framework, no runtime
 dependency beyond one Google Fonts request that the page can lose without
 breaking.
 
 ```
-index.html         the overview — 8 sheets, the argument and the demo run
-architecture.html  the build spec — 5 sheets, one schematic each
-demo.html          the demo request — 1 sheet, the request slip
-base.css           the shared design system: tokens, type, components, chrome
-app.js             one requestAnimationFrame loop; every scroll-linked behaviour
-DESIGN.md          the visual system as built, and where it is thin
-docs/              the source documents the architecture sheet summarises
+index.html   the overview — 8 sheets, the argument and the demo run
+demo.html    the demo request — 1 sheet, the request slip
+base.css     the shared design system: tokens, type, components, chrome
+app.js       one requestAnimationFrame loop; every scroll-linked behaviour
+DESIGN.md    the visual system as built, and where it is thin
 ```
 
 `base.css` is the single source of truth for tokens and shared components. Each
