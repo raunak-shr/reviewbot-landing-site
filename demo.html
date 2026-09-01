@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ReviewBot — Request a demo</title>
+<meta name="description" content="Raise a request to see ReviewBot run against a real pull request on your own repository. Four fields, no account, no install.">
+<meta name="color-scheme" content="light">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null"
+      href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Azeret+Mono:wght@300..700&display=swap">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Azeret+Mono:wght@300..700&display=swap"></noscript>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2314161A'/%3E%3Cpath d='M9 12h14v10H9z' fill='none' stroke='%23ECEAE4' stroke-width='2.5'/%3E%3Cpath d='M16 6v6' stroke='%23ECEAE4' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='5' r='2.5' fill='%23B41E28'/%3E%3Cpath d='M12.5 16.5h2M17.5 16.5h2' stroke='%23ECEAE4' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="base.css">
+</head>
+<body>
+<!--
+  SHEET-SET 3. One sheet, one job: raise a request against the service.
+  This is the first surface in the document with genuine form controls, so it is
+  where the system's missing input layer gets invented — in the ruled-line idiom
+  the rest of the log is written in, never an imported generic field. Everything
+  the visitor types is Ballpoint Blue, because a person wrote it by hand.
+-->
+<style>
+/* ═══ THE REQUEST SLIP ═════════════════════════════════════════════════════
+   Until now every field on this surface was a printed value. These are the
+   first blanks a person actually fills in, and they are drawn as blanks: a
+   stencilled label printed on the form, and a ruled line to write on. */
+
+.req{padding-block:clamp(2.2rem,5.4vw,4rem) clamp(3rem,6vw,5rem)}
+.req__grid{display:grid;gap:clamp(1.8rem,3.6vw,3rem);align-items:start}
+.req__grid>*{min-width:0}
+@media (min-width:960px){
+  .req__grid{grid-template-columns:minmax(0,1fr) minmax(420px,.94fr);
+    column-gap:clamp(2rem,4.6vw,3.6rem)}
+  .req__slip{align-self:start}
+}
+.req .lede{margin-top:clamp(1.1rem,2.2vw,1.5rem)}
+
+/* What happens after the slip is raised. A ruled list, flush left, padded off
+   every rule it follows — the corrected Flush-Left Rule. */
+.steps{display:grid;gap:0;margin-top:clamp(1.8rem,3.4vw,2.6rem);
+  border-top:var(--hair) solid var(--rule-2)}
+.steps>div{display:grid;grid-template-columns:2.1rem minmax(0,1fr);
+  gap:0 .3rem;padding:.95rem 1rem .95rem 0;
+  border-bottom:var(--hair) solid var(--rule)}
+.steps>div:last-child{border-bottom:0}
+.steps b{font-family:var(--mono);font-size:.78rem;color:var(--ink-3);
+  font-weight:500;padding-top:.1rem}
+.steps h2{font-variation-settings:'wdth' 100,'wght' 680;font-size:.96rem;
+  letter-spacing:-.01em;margin-bottom:.22rem}
+.steps p{font-size:.86rem;line-height:1.5;color:var(--ink-2);max-width:52ch}
+
+/* ── The writable field ───────────────────────────────────────────────────
+   A blank on a form: the label is printed, the line is what you write on, and
+   what you write is Ballpoint Blue because a person put it there. No box, no
+   radius, no fill — the rule under the line is the whole control. */
+.fi{display:flex;flex-direction:column;gap:.22rem;min-width:0}
+.fi>label{color:var(--ink-3);font-variation-settings:'wdth' 74,'wght' 700;
+  letter-spacing:.12em;text-transform:uppercase;font-size:.7rem;
+  display:flex;align-items:baseline;gap:.5rem}
+.fi>label i{font-style:normal;font-variation-settings:'wdth' 76,'wght' 500;
+  letter-spacing:.08em;color:var(--ink-3);margin-left:auto;opacity:.82}
+.fi input,.fi textarea{
+  font-family:var(--mono);font-size:.82rem;font-weight:500;letter-spacing:-.02em;
+  color:var(--pen);background:transparent;
+  border:0;border-bottom:var(--hair) solid var(--rule);border-radius:0;
+  padding:.3rem 0 .28rem;width:100%;min-width:0;
+  transition:border-color .2s var(--e-io),background .2s var(--e-io)}
+.fi textarea{resize:vertical;min-height:5.2rem;line-height:1.6}
+.fi input::placeholder,.fi textarea::placeholder{
+  color:var(--ink-3);font-family:var(--sans);font-variation-settings:'wdth' 100,'wght' 400;
+  letter-spacing:0;opacity:1}
+/* A person writing in the blank presses harder on the line. */
+.fi input:hover,.fi textarea:hover{border-bottom-color:var(--rule-2)}
+.fi input:focus,.fi textarea:focus{border-bottom-color:var(--pen);
+  border-bottom-width:1.5px;padding-bottom:calc(.28rem - .5px)}
+/* Error is a placard state, so it is placard red — and it says what is wrong,
+   never just that something is. */
+.fi input[aria-invalid="true"],.fi textarea[aria-invalid="true"]{
+  border-bottom-color:var(--red);border-bottom-width:1.5px;
+  padding-bottom:calc(.28rem - .5px);
+  background:linear-gradient(var(--red-wash),var(--red-wash))}
+.fi__err{display:none;color:var(--red);font-variation-settings:'wdth' 76,'wght' 700;
+  letter-spacing:.08em;text-transform:uppercase;font-size:.66rem;line-height:1.3;
+  margin-top:.28rem}
+.fi[data-bad] .fi__err{display:block}
+/* Nothing on this form is disabled at rest, but the state has to exist before
+   somebody needs it: a blank that cannot be written in is a printed value. */
+.fi input:disabled,.fi textarea:disabled{
+  color:var(--ink-3);background:var(--paper-lo);
+  border-bottom-style:dashed;cursor:not-allowed}
+
+.req__fields{display:grid;gap:1.1rem 1.1rem}
+@media (min-width:520px){.req__two{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.req__two{display:grid;gap:1.1rem 1.1rem}
+/* The last blank ends on its own writing line; the action row opens on a
+   heavier one. Two rules that close together read as one doubled rule. */
+.req__foot{margin-top:1.9rem;padding-top:1.1rem;
+  border-top:var(--hair) solid var(--rule-2);display:flex;flex-wrap:wrap;
+  gap:.8rem;align-items:center}
+.req__foot .btn{flex:none}
+.req__hint{font-size:.76rem;line-height:1.45;color:var(--ink-3);max-width:34ch}
+@media (max-width:460px){
+  .req__foot .btn{flex:1 1 100%;justify-content:center}
+  .req__hint{max-width:none}
+}
+/* The button spends a moment composing the mail. It says so rather than
+   going dead. */
+.btn[data-busy]{pointer-events:none;opacity:.72}
+.btn[data-busy] .btn__go{display:none}
+.btn .btn__wait{display:none}
+.btn[data-busy] .btn__wait{display:inline}
+
+/* ── Raised ───────────────────────────────────────────────────────────────
+   The slip is stamped and the form is replaced by its own receipt. Released
+   green, because the request has gone. */
+.raised{display:none}
+[data-state="raised"] .req__form{display:none}
+[data-state="raised"] .raised{display:block}
+.raised__stamp{display:flex;justify-content:flex-end;margin-bottom:.9rem}
+.raised .f{margin-top:.9rem}
+.raised__again{margin-top:1.2rem;padding-top:1rem;
+  border-top:var(--hair) dashed var(--rule);font-size:.8rem;line-height:1.5;
+  color:var(--ink-2)}
+.raised__again button{font-family:var(--mono);font-size:.8rem;color:var(--pen);
+  border-bottom:var(--hair) solid var(--pen);padding-bottom:1px;
+  transition:color .2s,border-color .2s}
+.raised__again button:hover{color:var(--red);border-bottom-color:var(--red)}
+
+.xnote{border-top:2px solid var(--ink);padding-block:clamp(2rem,4vw,3rem);
+  font-size:.84rem;line-height:1.6;color:var(--ink-2);max-width:78ch}
+</style>
+
+<a class="skip" href="#slip">Skip to the request</a>
+
+<header class="mast" id="mast">
+  <div class="wrap mast__in">
+    <a class="brand" href="index.html" aria-label="ReviewBot — the overview sheet">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <rect x=".75" y=".75" width="30.5" height="30.5" fill="#16171A"/>
+        <path d="M8.5 12.5h15v11h-15z" fill="none" stroke="#ECEAE4" stroke-width="2.2"/>
+        <path d="M16 6.5v6" stroke="#ECEAE4" stroke-width="2.2"/>
+        <circle cx="16" cy="5" r="2.6" fill="#B41E28"/>
+        <path d="M12.4 17.6h2.1M17.5 17.6h2.1" stroke="#ECEAE4" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M5.5 15.5v5M26.5 15.5v5" stroke="#ECEAE4" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+      <b>ReviewBot</b>
+    </a>
+    <div class="mast__meta" aria-hidden="true">
+      <div class="f"><span>Document</span><b>Demo request</b></div>
+      <div class="f"><span>Form</span><b>RB-DR/01 · rev 0.5</b></div>
+    </div>
+    <nav class="mast__nav" aria-label="Sheets">
+      <a class="mast__nav-x" href="index.html">The overview
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+      </a>
+      <a class="mast__nav-x" href="architecture.html">Architecture
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+      </a>
+    </nav>
+    <div class="mast__prog" aria-hidden="true"></div>
+  </div>
+</header>
+
+<main id="main">
+<section class="req sheet" id="slip" aria-labelledby="h-req">
+  <div class="punches" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="wrap">
+    <div class="rulebar">
+      <span class="stencil">Demo request</span><hr>
+      <span class="stencil">Sheet 1 of 1</span>
+    </div>
+
+    <div class="req__grid">
+      <div>
+        <h1 class="d1" id="h-req">See it hold a real merge.</h1>
+        <p class="lede">A demo is one pull request on one of your own repositories, reviewed
+          end to end: the findings it raises, the ones it suppresses and why, the check going
+          red, and the merge released on a signature.</p>
+        <p class="lede" style="margin-top:.9rem">Four fields. No account, no install, and
+          nothing runs against your code until you say so.</p>
+
+        <div class="steps">
+          <div>
+            <b>01</b>
+            <div>
+              <h2>You raise the slip</h2>
+              <p>The form opens your mail client with the request already written. Nothing is
+                sent from this page, and nothing is stored by it.</p>
+            </div>
+          </div>
+          <div>
+            <b>02</b>
+            <div>
+              <h2>We agree a repository and a window</h2>
+              <p>Read access to one repository, for as long as the demo runs. A fork or a
+                scratch copy is fine and is what most people pick.</p>
+            </div>
+          </div>
+          <div>
+            <b>03</b>
+            <div>
+              <h2>You watch one pull request go through</h2>
+              <p>Roughly thirty minutes, live. You see the findings, the triage decisions, the
+                comments it chose not to post, and the certificate at the end.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form req__slip" data-slip>
+        <div class="form__head">
+          <span class="form__title">Request for demonstration</span>
+          <span class="form__serial">RB-DR/01</span>
+        </div>
+        <div class="form__body">
+
+          <form class="req__form" novalidate data-form>
+            <div class="req__fields">
+              <div class="req__two">
+                <div class="fi" data-field>
+                  <label for="q-name">Your name</label>
+                  <input id="q-name" name="name" type="text" autocomplete="name"
+                         placeholder="Who is raising this" required>
+                  <span class="fi__err" data-err>Enter a name we can address the reply to.</span>
+                </div>
+                <div class="fi" data-field>
+                  <label for="q-mail">Work email</label>
+                  <input id="q-mail" name="email" type="email" autocomplete="email"
+                         inputmode="email" placeholder="Where the reply goes" required>
+                  <span class="fi__err" data-err>Enter an address the reply can reach.</span>
+                </div>
+              </div>
+
+              <div class="fi" data-field>
+                <label for="q-org">Organisation <i>optional</i></label>
+                <input id="q-org" name="org" type="text" autocomplete="organization"
+                       placeholder="Who you work for">
+                <span class="fi__err" data-err>Check this field.</span>
+              </div>
+
+              <div class="fi" data-field>
+                <label for="q-repo">Where it would run</label>
+                <input id="q-repo" name="repo" type="text"
+                       placeholder="e.g. two private repos, Python and React" required>
+                <span class="fi__err" data-err>Say roughly what it would be pointed at.</span>
+              </div>
+
+              <div class="fi" data-field>
+                <label for="q-note">What you want to see <i>optional</i></label>
+                <textarea id="q-note" name="note" rows="3"
+                          placeholder="A failure mode you care about, a repository that gets noisy, a question about the gate"></textarea>
+                <span class="fi__err" data-err>Check this field.</span>
+              </div>
+            </div>
+
+            <div class="req__foot">
+              <button class="btn" type="submit" data-submit>
+                <span class="btn__go">Raise the request</span>
+                <span class="btn__wait">Composing&hellip;</span>
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+              </button>
+              <p class="req__hint">Opens your mail client with the request already written.
+                Nothing leaves this page on its own.</p>
+            </div>
+            <p class="fi__err" data-formerr style="margin-top:.9rem" role="alert"></p>
+          </form>
+
+          <div class="raised" data-raised role="status">
+            <div class="raised__stamp">
+              <span class="stamp stamp--green">Request<br>raised<small>RB-DR/01 &middot; awaiting reply</small></span>
+            </div>
+            <p class="body" style="font-size:.92rem">Your mail client should have opened with the
+              request written out. Send it as it stands, or add anything else you want us to look
+              at first &mdash; it comes to a person, not a queue.</p>
+            <div class="f"><span>Raised by</span><b data-echo-name>&mdash;</b></div>
+            <div class="f"><span>Reply goes to</span><b class="pen" data-echo-mail>&mdash;</b></div>
+            <div class="f"><span>Typical reply</span><b>within one working day</b></div>
+            <div class="raised__again">Nothing opened? Your browser may have no mail client
+              registered. <button type="button" data-again>Open it again</button> &mdash; or
+              raise the slip from a device that has one.</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="xnote">
+  <div class="wrap">
+    <div class="rulebar">
+      <span class="stencil">On what this page does with your details</span><hr>
+      <span class="stencil">RB-DR/01</span>
+    </div>
+    <p>This form has no server behind it. Nothing you type is transmitted, logged or stored by
+      this page &mdash; the button assembles the text into a message and hands it to whatever mail
+      client your device already has, which is the only thing that sends anything. Close the tab
+      before sending and the request simply never existed.</p>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__brand">
+      <div>
+        <a class="brand" href="index.html" style="margin-bottom:.8rem" aria-label="ReviewBot — the overview sheet">
+          <svg viewBox="0 0 32 32" aria-hidden="true">
+            <rect x=".75" y=".75" width="30.5" height="30.5" fill="#16171A"/>
+            <path d="M8.5 12.5h15v11h-15z" fill="none" stroke="#ECEAE4" stroke-width="2.2"/>
+            <path d="M16 6.5v6" stroke="#ECEAE4" stroke-width="2.2"/>
+            <circle cx="16" cy="5" r="2.6" fill="#B41E28"/>
+            <path d="M12.4 17.6h2.1M17.5 17.6h2.1" stroke="#ECEAE4" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M5.5 15.5v5M26.5 15.5v5" stroke="#ECEAE4" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+          <b>ReviewBot</b>
+        </a>
+        <p style="max-width:54ch">Scheduled multi-agent code review, running as a GitHub App. It
+          reads the diff, holds the merge on a major finding, and releases it on a named
+          developer's signature.</p>
+      </div>
+    </div>
+    <p class="foot__note">Sample data on the other sheets of this document &mdash; pull requests,
+      finding references, diffs, developer names, timestamps and confidence values &mdash; is
+      written to demonstrate the mechanism. The behaviour it illustrates is the specified
+      behaviour of the service. No accuracy, adoption, performance or cost figure is claimed
+      anywhere in this document, because none has been measured yet.</p>
+  </div>
+</footer>
+</main>
+
+<script>
+/* The masthead's two behaviours, and nothing else: this sheet has no scenes.
+   One rAF loop, one write path, same contract as the other two sheets. */
+(function () {
+  var mast = document.getElementById('mast'), root = document.documentElement;
+  var last = -1, stuck = false, ticking = false;
+  function frame() {
+    ticking = false;
+    var max = Math.max(1, root.scrollHeight - innerHeight);
+    var d = Math.min(1, Math.max(0, scrollY / max)).toFixed(4);
+    if (d !== last) { root.style.setProperty('--doc', d); last = d; }
+    var s = scrollY > 8;
+    if (s !== stuck) { stuck = s; s ? mast.setAttribute('data-stuck', '') : mast.removeAttribute('data-stuck'); }
+  }
+  addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }, { passive: true });
+  frame();
+})();
+
+/* ── The slip ──────────────────────────────────────────────────────────────
+   Validation is done here rather than by the browser because a native
+   validation bubble is a browser surface this world has not themed, and it
+   would be the one un-designed object on the page. Each blank says what is
+   wrong with it, on its own rule, in placard red. */
+(function () {
+  var slip = document.querySelector('[data-slip]');
+  var form = document.querySelector('[data-form]');
+  var btn  = document.querySelector('[data-submit]');
+  var formErr = document.querySelector('[data-formerr]');
+  if (!form) return;
+
+  /* Held encoded, assembled only at the moment a request is actually raised,
+     so the address is never text on the page and never a harvestable href. */
+  var TO = 'c2hyZWV5YW5zaGRhczM0QGdtYWlsLmNvbQ==';
+  var lastHref = '';
+
+  var MAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  function fieldOf(el) { return el.closest('[data-field]'); }
+
+  function check(el) {
+    var v = el.value.trim();
+    if (el.hasAttribute('required') && !v) return false;
+    if (el.type === 'email' && v && !MAIL.test(v)) return false;
+    return true;
+  }
+  function mark(el, ok) {
+    var f = fieldOf(el);
+    if (!f) return;
+    if (ok) { f.removeAttribute('data-bad'); el.removeAttribute('aria-invalid'); }
+    else    { f.setAttribute('data-bad', ''); el.setAttribute('aria-invalid', 'true'); }
+  }
+
+  /* Clear a complaint as soon as the blank is corrected, never re-raise one
+     while somebody is still typing into it. */
+  form.querySelectorAll('input, textarea').forEach(function (el) {
+    el.addEventListener('input', function () { if (fieldOf(el) && fieldOf(el).hasAttribute('data-bad')) mark(el, check(el)); });
+    el.addEventListener('blur',  function () { if (el.value.trim() || el.hasAttribute('required')) mark(el, check(el)); });
+  });
+
+  function compose(d) {
+    var subject = 'ReviewBot — demo request — ' + (d.org || d.name);
+    var body = [
+      'Demo request raised from the ReviewBot document.',
+      '',
+      'Name          ' + d.name,
+      'Email         ' + d.email,
+      'Organisation  ' + (d.org || '—'),
+      'Would run on  ' + d.repo,
+      '',
+      'What they want to see',
+      (d.note || '—'),
+      '',
+      '— RB-DR/01'
+    ].join('\n');
+    return 'mailto:' + atob(TO) +
+           '?subject=' + encodeURIComponent(subject) +
+           '&body='    + encodeURIComponent(body);
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    formErr.style.display = 'none';
+    formErr.textContent = '';
+
+    var els = [].slice.call(form.querySelectorAll('input, textarea'));
+    var bad = null, n = 0;
+    els.forEach(function (el) {
+      var ok = check(el);
+      mark(el, ok);
+      if (!ok) { n++; if (!bad) bad = el; }
+    });
+    if (bad) {
+      /* Count what is actually wrong. A summary that disagrees with the blanks
+         it is summarising is worse than no summary. */
+      formErr.textContent = n === 1
+        ? 'One blank is still open on this slip.'
+        : n + ' blanks are still open on this slip.';
+      formErr.style.display = 'block';
+      bad.focus();
+      return;
+    }
+
+    var d = {};
+    els.forEach(function (el) { d[el.name] = el.value.trim(); });
+
+    btn.setAttribute('data-busy', '');
+    lastHref = compose(d);
+    location.href = lastHref;
+
+    /* The mail client takes over the tab for a moment; the slip is stamped
+       once it has, so the receipt is what is waiting when they come back. */
+    setTimeout(function () {
+      btn.removeAttribute('data-busy');
+      slip.querySelector('[data-echo-name]').textContent = d.name;
+      slip.querySelector('[data-echo-mail]').textContent = d.email;
+      slip.setAttribute('data-state', 'raised');
+      slip.querySelector('[data-raised]').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }, 700);
+  });
+
+  document.querySelector('[data-again]').addEventListener('click', function () {
+    if (lastHref) location.href = lastHref;
+  });
+})();
+</script>
+</body>
+</html>

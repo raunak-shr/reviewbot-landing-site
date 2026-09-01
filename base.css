@@ -1,0 +1,479 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   ReviewBot — shared base. The aircraft technical log, everything both sheets
+   of the document need: tokens, reset, type scale, the form and its parts, the
+   masthead, the running head, and the footer. Page-specific components stay in
+   the page that owns them.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ═══ TOKENS ═══════════════════════════════════════════════════════════════
+   The world is an aircraft technical log. Two materials only: carbonless form
+   paper (three copies — bone, rose, canary) and instrument panel. Code lives on
+   the panel; every judgement lives on the paper. Colour is placard colour: red
+   is inoperative, amber is a clock running, green is released to service. */
+:root{
+  --paper:#ECEAE4;
+  --paper-hi:#F5F3EE;
+  --paper-lo:#E1DFD6;
+  --paper-rose:#EDD9D3;
+  --paper-can:#EEE3BA;
+  --rule:#C4C1B6;
+  --rule-2:#A19E92;
+  --rule-3:#87857A;
+  --ink:#16171A;
+  --ink-2:#54555A;
+  --ink-3:#5C5E63;
+  --red:#B41E28;
+  --red-deep:#8C161F;
+  --red-wash:#B41E280F;
+  --amber:#8F5B00;
+  --amber-hi:#DE9A10;
+  --amber-wash:#8F5B0014;
+  --green:#1A6A40;
+  --green-hi:#2FA268;
+  --pen:#24386B;
+
+  --panel:#131519;
+  --panel-2:#1B1E23;
+  --panel-3:#24282E;
+  --panel-rule:#33373E;
+  --panel-ink:#E9E7E1;
+  --panel-ink-2:#9CA2A9;
+  --panel-red:#F0616A;
+  --panel-amber:#E9AE3A;
+  --panel-green:#4CD08A;
+  --panel-pen:#7E9BE0;
+
+  --sans:'Archivo',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+  --mono:'Azeret Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+
+  --gut:clamp(18px,4.2vw,64px);
+  --maxw:1360px;
+  --hair:1px;
+
+  --e-out:cubic-bezier(.16,1,.3,1);
+  --e-io:cubic-bezier(.65,0,.35,1);
+}
+
+/* ═══ RESET ═══ */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body,h1,h2,h3,h4,p,figure,dl,dd,ul,ol{margin:0}
+ul,ol{padding:0;list-style:none}
+img,svg{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit}
+
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  font-variation-settings:'wdth' 100,'wght' 400;
+  background:var(--paper);
+  color:var(--ink);
+  font-size:16px;
+  line-height:1.55;
+  overflow-x:clip;
+  /* The fibre of carbonless stock: two very fine crossed rules, not a grid
+     overlay — the paper this whole page is printed on. */
+  background-image:
+    repeating-linear-gradient(90deg,#00000007 0 1px,transparent 1px 4px),
+    repeating-linear-gradient(0deg,#00000004 0 1px,transparent 1px 4px);
+}
+
+/* ═══ BROWSER SURFACES — themed, not inherited ═══ */
+::selection{background:var(--amber-hi);color:var(--ink)}
+:where(.panel,.panel *)::selection{background:var(--panel-amber);color:var(--panel)}
+:focus-visible{outline:2px solid var(--pen);outline-offset:3px;border-radius:1px}
+/* The masthead is sticky, so an anchored section must not land under it. */
+:where(section,div)[id]{scroll-margin-top:76px}
+.panel :focus-visible{outline-color:var(--panel-amber)}
+html{scrollbar-color:var(--rule-2) var(--paper-lo);scrollbar-width:thin}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--paper-lo)}
+::-webkit-scrollbar-thumb{background:var(--rule-2);border:3px solid var(--paper-lo)}
+::-webkit-scrollbar-thumb:hover{background:var(--rule-3)}
+
+/* ═══ TYPE SCALE ═══ */
+.d1{font-size:clamp(2.6rem,7.4vw,5.9rem);line-height:.94;letter-spacing:-.03em;
+    font-variation-settings:'wdth' 112,'wght' 780;text-wrap:balance}
+.d2{font-size:clamp(2rem,4.6vw,3.5rem);line-height:1.02;letter-spacing:-.028em;
+    font-variation-settings:'wdth' 110,'wght' 740;text-wrap:balance}
+.d3{font-size:clamp(1.35rem,2.3vw,1.95rem);line-height:1.12;letter-spacing:-.02em;
+    font-variation-settings:'wdth' 106,'wght' 700;text-wrap:balance}
+.d4{font-size:clamp(1.05rem,1.4vw,1.22rem);line-height:1.24;letter-spacing:-.012em;
+    font-variation-settings:'wdth' 104,'wght' 680}
+.lede{font-size:clamp(1.05rem,1.55vw,1.28rem);line-height:1.52;color:var(--ink-2);
+      max-width:62ch;font-variation-settings:'wdth' 100,'wght' 400}
+.body{font-size:1rem;line-height:1.6;color:var(--ink-2);max-width:68ch}
+.body strong{color:var(--ink);font-variation-settings:'wdth' 100,'wght' 620}
+
+/* The form's own voice: stencilled condensed caps. Used for field labels and
+   placards — things printed on the form, never as a label above a headline. */
+.stencil{font-variation-settings:'wdth' 74,'wght' 700;letter-spacing:.12em;
+  text-transform:uppercase;font-size:.7rem;line-height:1.15}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.pen{font-family:var(--mono);color:var(--pen);font-weight:500}
+
+/* ═══ LAYOUT ═══ */
+.wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gut)}
+.sheet{position:relative}
+/* Every major section is a page of the log, edged by its rule. */
+.page{border-top:var(--hair) solid var(--rule-2);position:relative}
+.page::before{
+  content:'';position:absolute;inset:0 0 auto 0;height:5px;
+  border-bottom:var(--hair) solid var(--rule);pointer-events:none
+}
+
+/* Hole punches down the binding edge — the log is in a ring binder. */
+.punches{position:absolute;left:calc(var(--gut) * .28);top:0;bottom:0;width:14px;
+  display:none;flex-direction:column;justify-content:space-evenly;align-items:center;
+  padding-block:16vh;pointer-events:none;z-index:2}
+.punches i{display:block;width:13px;height:13px;border-radius:50%;
+  background:#0000000d;box-shadow:inset 0 1px 2px #00000026, 0 1px 0 #ffffff8c}
+@media (min-width:1180px){.punches{display:flex}}
+
+/* ═══ BUTTONS ═══ */
+.btn{display:inline-flex;align-items:center;gap:.6em;padding:.82em 1.35em;
+  border:var(--hair) solid var(--ink);background:var(--ink);color:var(--paper-hi);
+  font-variation-settings:'wdth' 92,'wght' 640;font-size:.9rem;letter-spacing:.01em;
+  transition:transform .18s var(--e-out),box-shadow .18s var(--e-out),background .18s;
+  box-shadow:0 1px 0 var(--rule-2);position:relative}
+.btn:hover{background:var(--red);border-color:var(--red);transform:translateY(-2px);
+  box-shadow:0 7px 16px -10px #6d101880,0 2px 0 var(--rule-2)}
+.btn:active{transform:translateY(0)}
+.btn--ghost{background:transparent;color:var(--ink);border-color:var(--rule-2)}
+.btn--ghost:hover{background:var(--paper-hi);color:var(--ink);border-color:var(--ink);
+  box-shadow:0 6px 14px -8px #00000038,0 2px 0 var(--rule)}
+.btn svg{width:1em;height:1em;flex:none}
+
+/* ═══ MOTION PRIMITIVE ═══
+   Every reveal reads its section's scroll progress from --p (0→1), set once per
+   frame in JS. Nothing animates on a timer; the page moves only when you do. */
+.rise{opacity:calc(var(--p,1) * 2.6 - .18);
+  transform:translate3d(0,calc((1 - min(var(--p,1) * 1.7,1)) * 22px),0)}
+.rise-2{opacity:calc(var(--p,1) * 2.4 - .5);
+  transform:translate3d(0,calc((1 - min(var(--p,1) * 1.35,1)) * 30px),0)}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .rise,.rise-2{opacity:1!important;transform:none!important}
+}
+
+/* ═══ THE FORM ═══════════════════════════════════════════════════════════════
+   A log page: ruled boxes, a serial in the corner, column heads in stencil, and
+   every entered value in mono because a person or a machine wrote it in. */
+.form{background:var(--paper-hi);border:var(--hair) solid var(--rule-2);
+  box-shadow:0 1px 0 #ffffffb3 inset,0 14px 34px -26px #00000059,0 2px 6px -4px #0000002e;
+  position:relative}
+.form--rose{background:var(--paper-rose)}
+/* Secondary ink on a tinted copy is tinted from that copy, not dropped to grey. */
+.form--rose .f>span,.form--rose .log th,.form--rose .form__serial,.form--rose .dim{color:#63524E}
+.form--can .f>span,.form--can .log th,.form--can .form__serial,.form--can .dim{color:#5E5732}
+/* Nested inside a panel or a certificate, a form drops its shadow and keeps
+   only its rules — a block printed on the page, not a card floating over it. */
+.tabp .form,.crs__cols .form{box-shadow:none;border-color:var(--rule)}
+.form--can{background:var(--paper-can)}
+.form__head{display:flex;flex-wrap:wrap;align-items:baseline;gap:.6rem 1.4rem;
+  padding:.62rem .9rem;border-bottom:var(--hair) solid var(--rule-2);
+  background:linear-gradient(#00000009,#00000000)}
+.form__title{font-variation-settings:'wdth' 78,'wght' 760;letter-spacing:.1em;
+  text-transform:uppercase;font-size:.76rem}
+.form__serial{margin-left:auto;font-family:var(--mono);font-size:.76rem;
+  color:var(--ink-3);letter-spacing:0}
+.form__body{padding:.9rem;overflow-x:auto;scrollbar-width:thin}
+
+/* Field: a stencilled label over a ruled entry line. */
+.f{display:flex;flex-direction:column;gap:.18rem;min-width:0}
+.f>span{color:var(--ink-3);font-variation-settings:'wdth' 74,'wght' 700;
+  letter-spacing:.12em;text-transform:uppercase;font-size:.7rem}
+.f>b{font-family:var(--mono);font-weight:500;font-size:.8rem;letter-spacing:-.03em;
+  border-bottom:var(--hair) solid var(--rule);padding-bottom:.22rem;
+  overflow-wrap:anywhere}
+.f--pen>b{color:var(--pen)}
+
+/* The ruled table that carries defect rows. */
+.log{width:100%;border-collapse:collapse;font-size:.8rem}
+.log th{font-variation-settings:'wdth' 74,'wght' 700;letter-spacing:.12em;
+  text-transform:uppercase;font-size:.7rem;color:var(--ink-3);text-align:left;
+  padding:.42rem .55rem;border-bottom:var(--hair) solid var(--rule-2);white-space:nowrap}
+.log td{padding:.5rem .55rem;border-bottom:var(--hair) solid var(--rule);
+  vertical-align:top;font-family:var(--mono);font-size:.76rem;letter-spacing:-.02em}
+.log tr:last-child td{border-bottom:0}
+.log .num{white-space:nowrap}
+.log__note{color:var(--ink-2);font-family:var(--sans);font-size:.8rem;line-height:1.35;
+  letter-spacing:0}
+
+/* ═══ PLACARDS ═══ Colour is status. Nothing else on this page is coloured. */
+.plc{display:inline-flex;align-items:center;gap:.42em;padding:.24em .58em;
+  border:1.5px solid currentColor;font-variation-settings:'wdth' 76,'wght' 760;
+  letter-spacing:.1em;text-transform:uppercase;font-size:.7rem;line-height:1.3;
+  white-space:nowrap}
+.plc::before{content:'';width:.5em;height:.5em;background:currentColor;flex:none;
+  transform:rotate(45deg)}
+.plc--red{color:var(--red);background:var(--red-wash)}
+.plc--amber{color:var(--amber);background:var(--amber-wash)}
+.plc--green{color:var(--green);background:#1a6a4012}
+.plc--grey{color:var(--ink-3);background:#0000000a;border-style:dashed}
+.panel .plc--red{color:var(--panel-red);background:#f0616a1a}
+.panel .plc--amber{color:var(--panel-amber);background:#e9ae3a1a}
+.panel .plc--green{color:var(--panel-green);background:#4cd08a1a}
+.panel .plc--grey{color:var(--panel-ink-2);background:#ffffff0d}
+
+/* The big riveted INOPERATIVE placard — the one physical object on the page. */
+.placard{display:inline-block;padding:.72rem 1.1rem;background:var(--red);
+  color:#FFF3F1;border:2px solid #ffffff59;position:relative;
+  font-variation-settings:'wdth' 72,'wght' 820;letter-spacing:.16em;
+  text-transform:uppercase;font-size:.8rem;line-height:1.32;
+  box-shadow:0 10px 22px -14px #8c161fcc,0 2px 0 #6d1018}
+.placard::before,.placard::after{content:'';position:absolute;width:5px;height:5px;
+  border-radius:50%;background:#ffffff5c;top:50%;transform:translateY(-50%)}
+.placard::before{left:5px}
+.placard::after{right:5px}
+.placard small{display:block;font-variation-settings:'wdth' 76,'wght' 500;
+  letter-spacing:.07em;font-size:.7rem;opacity:.86;margin-top:.2rem}
+
+/* ═══ THE CHECK STRIP ═══ GitHub's merge box, in the form's hand. */
+.check{display:flex;align-items:center;gap:.7rem;padding:.6rem .8rem;
+  border:var(--hair) solid var(--rule-2);background:var(--paper-hi);
+  transition:border-color .5s var(--e-io),background .5s var(--e-io)}
+.check__dot{width:1.15rem;height:1.15rem;flex:none;position:relative}
+.check__dot svg{position:absolute;inset:0;width:100%;height:100%;
+  transition:opacity .34s var(--e-io),transform .34s var(--e-out)}
+.check__name{font-family:var(--mono);font-size:.8rem;letter-spacing:-.02em}
+.check__state{margin-left:auto;font-variation-settings:'wdth' 76,'wght' 700;
+  letter-spacing:.1em;text-transform:uppercase;font-size:.7rem}
+.check[data-state="fail"]{border-color:#b41e2866;
+  background:linear-gradient(var(--red-wash),var(--red-wash)),var(--paper-hi)}
+.check[data-state="fail"] .check__state{color:var(--red)}
+.check[data-state="pass"]{border-color:#1a6a4059;
+  background:linear-gradient(#1a6a400d,#1a6a400d),var(--paper-hi)}
+.check[data-state="pass"] .check__state{color:var(--green)}
+.check[data-state="pend"] .check__state{color:var(--amber)}
+.check .i-pass,.check .i-fail,.check .i-pend{opacity:0;transform:scale(.6)}
+.check[data-state="pass"] .i-pass,
+.check[data-state="fail"] .i-fail,
+.check[data-state="pend"] .i-pend{opacity:1;transform:scale(1)}
+
+/* ═══ THE PANEL ═══ Where code lives. The aircraft, not the paperwork. */
+.panel{background:var(--panel);color:var(--panel-ink);
+  border:var(--hair) solid var(--panel-rule);position:relative;
+  box-shadow:0 22px 46px -34px #000000a6,0 2px 8px -5px #0000005c}
+.panel__head{display:flex;align-items:center;gap:.7rem;padding:.52rem .8rem;
+  border-bottom:var(--hair) solid var(--panel-rule);background:var(--panel-2)}
+.panel__head .stencil{color:var(--panel-ink-2)}
+.panel__head .form__serial{color:#7F868D}
+.code{font-family:var(--mono);font-size:clamp(.71rem,.92vw,.8rem);line-height:1.72;
+  letter-spacing:-.025em;overflow-x:auto;padding:.75rem 0;
+  scrollbar-color:var(--panel-rule) var(--panel)}
+.code::-webkit-scrollbar-track{background:var(--panel)}
+.code::-webkit-scrollbar-thumb{background:var(--panel-rule);border-color:var(--panel)}
+.code ol{counter-reset:l}
+.code li{counter-increment:l;display:grid;grid-template-columns:3.1em 1.2em 1fr;
+  gap:0 .3em;padding-inline:.55rem;white-space:pre;position:relative}
+.code li::before{content:counter(l);grid-column:1;grid-row:1;color:#7B828A;
+  text-align:right;padding-right:.55em;font-size:.92em;user-select:none}
+.code li::after{content:attr(data-m);grid-column:2;grid-row:1;text-align:center;color:#7B828A}
+.code li[data-m="+"]{background:#4cd08a14}
+.code li[data-m="-"]{background:#f0616a14}
+.code li[data-m="+"]::after{color:var(--panel-green)}
+.code li[data-m="-"]::after{color:var(--panel-red)}
+.code .t{grid-column:3;grid-row:1;min-width:0}
+.code li[data-hot]{background:#f0616a1f;box-shadow:inset 2px 0 0 var(--panel-red)}
+/* Syntax: four roles, no rainbow. */
+.k{color:#C7A2EE}
+.s{color:#94D7AB}
+.c{color:#848B93;font-style:italic}
+.fn{color:#86BDF3}
+.n{color:#E9AE3A}
+.p{color:#959CA4}
+
+/* Margin annotation — a finding, written beside the line it is about. */
+.annot{display:grid;grid-template-columns:auto 1fr;gap:.55rem;
+  padding:.62rem .8rem;border-top:var(--hair) dashed var(--panel-rule);
+  background:#ffffff05;font-size:.8rem;line-height:1.45}
+.annot__rule{width:2px;background:var(--panel-red);border-radius:1px}
+.annot--amber .annot__rule{background:var(--panel-amber)}
+.annot--grey .annot__rule{background:#7B828A}
+.annot .annot__t{font-size:.84rem;font-variation-settings:'wdth' 100,'wght' 680;
+  letter-spacing:-.01em;margin-bottom:.2rem;display:flex;flex-wrap:wrap;
+  align-items:center;gap:.5rem;color:var(--panel-ink)}
+.annot p{color:var(--panel-ink-2);max-width:64ch}
+.annot code{font-family:var(--mono);font-size:.9em;color:var(--panel-ink);
+  background:#ffffff0f;padding:0 .22em}
+
+/* ═══ STAMPS ═══ Rubber, inked, slightly off-square, because a hand did it. */
+.stamp{display:inline-block;border:3px double currentColor;padding:.35em .7em;
+  color:var(--red);font-variation-settings:'wdth' 76,'wght' 800;letter-spacing:.14em;
+  text-transform:uppercase;font-size:.8rem;line-height:1.15;text-align:center;
+  opacity:.92;mix-blend-mode:multiply}
+.stamp--green{color:var(--green)}
+.stamp small{display:block;font-size:.7rem;letter-spacing:.08em;
+  font-variation-settings:'wdth' 78,'wght' 600;opacity:.85;margin-top:.1em}
+
+/* ═══ MASTHEAD ═══ The log's binding strip: aircraft, registration, page. */
+.mast{position:sticky;top:0;z-index:40;background:#ECEAE4F2;
+  backdrop-filter:saturate(1.3) blur(9px);
+  border-bottom:var(--hair) solid var(--rule-2);
+  transition:box-shadow .3s var(--e-io)}
+.mast[data-stuck]{box-shadow:0 6px 18px -14px #00000073}
+.mast__in{display:flex;align-items:center;gap:clamp(.8rem,2.4vw,2rem);
+  min-height:52px;padding-block:.42rem}
+.brand{display:flex;align-items:center;gap:.55rem;flex:none}
+.brand svg{width:24px;height:24px}
+.brand b{font-variation-settings:'wdth' 84,'wght' 780;letter-spacing:-.005em;
+  font-size:1.02rem}
+.mast__meta{display:none;gap:1.6rem;margin-left:.6rem}
+@media (min-width:1460px){.mast__meta{display:flex}}
+.mast__meta .f{gap:0}
+.mast__meta .f>b{border:0;padding:0;font-size:.76rem}
+.mast__nav{margin-left:auto;display:none;gap:clamp(.8rem,1.15vw,1.3rem);align-items:center}
+@media (min-width:900px){.mast__nav{display:flex}}
+/* A nav item that wraps stops being a tab and becomes two lines of prose. Seven
+   of them plus a CTA is what this strip has to hold, so none of them wrap and
+   the metadata fields yield the width first. */
+.mast__nav a{text-decoration:none;font-size:.84rem;color:var(--ink-2);white-space:nowrap;
+  font-variation-settings:'wdth' 96,'wght' 560;position:relative;padding-block:.2rem}
+.mast__nav a::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1.5px;
+  background:var(--red);transform:scaleX(0);transform-origin:left;
+  transition:transform .28s var(--e-out)}
+.mast__nav a:hover{color:var(--ink)}
+.mast__nav a:hover::after{transform:scaleX(1)}
+/* The masthead carries the page's primary action at every width, because below
+   1060px the hero's own copy of it sits under the log and off the first
+   screen. One control, one meaning, no breakpoint to get wrong. */
+.mast__cta{margin-left:auto;font-size:.8rem;padding:.55em 1em;white-space:nowrap}
+@media (min-width:900px){.mast__cta{margin-left:0}}
+@media (max-width:400px){.mast__cta{font-size:.76rem;padding:.55em .8em}}
+/* Progress through the log, drawn on the binding rule. */
+.mast__prog{position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--red);
+  transform-origin:0 50%;transform:scaleX(var(--doc,0));transition:transform .1s linear}
+
+/* ═══ SECTION HEADS ═══ */
+.head{max-width:74ch;margin-bottom:clamp(1.8rem,3.6vw,2.8rem)}
+.head p{margin-top:1rem}
+.sec{padding-block:clamp(3.4rem,7.5vw,7rem)}
+.rulebar{display:flex;align-items:center;gap:1rem;padding-block:.5rem;
+  border-bottom:var(--hair) solid var(--rule-2);margin-bottom:clamp(1.6rem,3vw,2.4rem)}
+.rulebar .stencil{color:var(--ink-3);white-space:nowrap}
+.rulebar hr{flex:1;border:0;border-top:var(--hair) solid var(--rule)}
+
+/* ═══ FOOTER ═══ */
+.foot{border-top:var(--hair) solid var(--rule-2);padding-block:2.4rem 3rem;
+  font-size:.84rem;color:var(--ink-2)}
+.foot h3{font-variation-settings:'wdth' 74,'wght' 700;letter-spacing:.13em;
+  text-transform:uppercase;font-size:.7rem;color:var(--ink-3);margin-bottom:.7rem}
+
+/* ═══ BILL OF MATERIALS ═══
+   The parts list on the back of the form: what the service is actually made
+   of, one ruled cell each. Every mark is redrawn in the log's own hand — one
+   ink, one stroke weight, no fills and no vendor colour, because on this page
+   colour is a state and a supplier's brand is not one.
+   Twelve cells, so 2, 3 and 4 columns all divide evenly and no row is ragged.
+   Each column count owns an exclusive width range, so one breakpoint's
+   last-in-row resets can never leak into the next one's. */
+.bom{display:grid;gap:0;
+  grid-template-columns:repeat(2,minmax(0,1fr));--bom-pad:clamp(.85rem,1.6vw,1.3rem)}
+.bom li{padding:.85rem var(--bom-pad) .9rem 0;min-width:0;margin-bottom:0;
+  border-right:var(--hair) solid var(--rule);
+  border-bottom:var(--hair) solid var(--rule)}
+@media (max-width:699.98px){
+  .bom li:nth-child(2n){border-right:0}
+  .bom li:nth-child(2n){padding-left:var(--bom-pad)}
+  .bom li:nth-child(n+11){border-bottom:0}
+}
+@media (min-width:700px) and (max-width:999.98px){
+  .bom{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .bom li{padding-left:var(--bom-pad)}
+  .bom li:nth-child(3n+1){padding-left:0}
+  .bom li:nth-child(3n){border-right:0}
+  .bom li:nth-child(n+10){border-bottom:0}
+}
+@media (min-width:1000px){
+  .bom{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .bom li{padding-left:var(--bom-pad)}
+  .bom li:nth-child(4n+1){padding-left:0}
+  .bom li:nth-child(4n){border-right:0}
+  .bom li:nth-child(n+9){border-bottom:0}
+}
+/* The mark sits beside the name on its baseline, the way a part number sits
+   beside a part — not stacked above it as a decorative tile. */
+.bom__id{display:flex;align-items:center;gap:.62rem;margin-bottom:.34rem}
+.bom__mark{width:1.3rem;height:1.3rem;flex:none;color:var(--ink);
+  transition:color .22s var(--e-io)}
+.bom li:hover .bom__mark{color:var(--red)}
+.bom b{font-variation-settings:'wdth' 96,'wght' 680;font-size:.9rem;
+  letter-spacing:-.01em;color:var(--ink);min-width:0;overflow-wrap:anywhere}
+.bom span{display:block;font-family:var(--mono);font-size:.71rem;letter-spacing:-.02em;
+  color:var(--ink-3);line-height:1.5}
+/* The Documents column carried the only headings, list items and links the
+   footer had. With it gone those rules were dead, and `.foot a` was worse than
+   dead: the brand is the last <a> left down there, so the link underline drew a
+   stray hairline under the mark. */
+.foot .brand{text-decoration:none}
+.foot__note{margin-top:2rem;padding-top:1.2rem;
+  border-top:var(--hair) solid var(--rule);font-size:.76rem;color:var(--ink-3);
+  max-width:82ch;line-height:1.55}
+
+/* ═══ UTILITIES ═══ */
+.vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip-path:inset(50%);white-space:nowrap;border:0}
+.skip{position:absolute;left:.6rem;top:-4rem;z-index:99;background:var(--ink);
+  color:var(--paper-hi);padding:.6em 1em;font-size:.86rem;transition:top .2s}
+.skip:focus{top:.6rem}
+.stack{display:flex;flex-direction:column;gap:.9rem}
+.row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.grid2{display:grid;gap:.9rem 1.1rem;grid-template-columns:repeat(2,minmax(0,1fr))}
+.mt{margin-top:clamp(1.4rem,3vw,2.2rem)}
+.dim{color:var(--ink-3)}
+
+/* ═══ SCHEMATIC ═══ The drawn part of the log: boxes are stock, wires are rule,
+   every label is stencilled and every value is mono, exactly as on paper. A
+   wide drawing scrolls inside its own channel rather than widening the page. */
+.sch{width:100%;height:auto;display:block}
+.sch text{font-family:'Archivo',sans-serif;font-variation-settings:'wdth' 76,'wght' 700;
+  letter-spacing:.11em;text-transform:uppercase;fill:var(--ink-3)}
+.sch .lbl{font-size:11px}
+.sch .val{font-family:'Azeret Mono',monospace;font-variation-settings:normal;
+  font-weight:500;letter-spacing:-.02em;text-transform:none;font-size:11px;fill:var(--ink-2)}
+.sch .box{fill:var(--paper-hi);stroke:var(--rule-2);stroke-width:1}
+.sch .box--on{fill:#FCFBF7;stroke:var(--ink)}
+.sch .wire{stroke:var(--rule-2);stroke-width:1;fill:none}
+.sch .flow{stroke:var(--red);stroke-width:2;fill:none;stroke-linecap:round}
+.sch .name{font-variation-settings:'wdth' 88,'wght' 700;letter-spacing:.02em;
+  text-transform:none;font-size:12.5px;fill:var(--ink)}
+.sch .node{transition:opacity .3s var(--e-io)}
+.sch-scroll{overflow-x:auto;overflow-y:hidden;max-width:100%;padding-bottom:.4rem;
+  scrollbar-color:var(--rule-2) transparent}
+.sch-scroll>svg{min-width:760px}
+
+/* The seventh item in the masthead nav is not a seventh section of this sheet —
+   it is the other document. A rule sets it apart from the in-page jumps, and
+   the small out-arrow says the link leaves the page you are on. */
+.mast__nav-x{display:inline-flex;align-items:center;gap:.34rem;
+  padding-left:1.2rem;margin-left:-.1rem;position:relative;
+  color:var(--ink);font-variation-settings:'wdth' 96,'wght' 620}
+.mast__nav-x::before{content:'';position:absolute;left:0;top:50%;translate:0 -50%;
+  width:var(--hair);height:1.05em;background:var(--rule-2)}
+.mast__nav-x svg{width:.72em;height:.72em;flex:none;color:var(--ink-3);
+  transition:color .28s var(--e-out),translate .28s var(--e-out)}
+.mast__nav-x:hover svg{color:var(--red);translate:1px -1px}
+.mast__nav-x::after{left:1.2rem}
+
+/* The footer's brand block. One column since the document list came out of it,
+   so it is a block rather than a grid — the bill of materials below carries the
+   width the second and third columns used to. */
+.foot__brand{display:grid;gap:1.8rem}
+
+/* A running head holds two labels and a rule between them. At phone width the
+   labels alone can be wider than the sheet, so the rule gives up its stretch
+   first and the labels are allowed to wrap rather than push the page sideways.
+   The rule never disappears: it is what makes the head a running head. */
+@media (max-width:640px){
+  .rulebar{column-gap:.8rem}
+  .rulebar .stencil{white-space:normal;min-width:0}
+  .rulebar hr{flex:0 1 auto;min-width:.75rem}
+}
+
+/* The cross-reference rule separates an off-page link from the in-page jumps
+   before it. First in the row there is nothing to separate it from. */
+.mast__nav-x:first-child{padding-left:0}
+.mast__nav-x:first-child::before{display:none}
+.mast__nav-x:first-child::after{left:0}
