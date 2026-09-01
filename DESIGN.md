@@ -289,6 +289,30 @@ components:
 >   `base.css`: the overview's own scrubbed schematic still uses it.
 > - **Nothing on either page now links outside the repo root**, which is what makes
 >   the build deployable to a static host unchanged.
+>
+> **Sixth pass — the slip actually sends, 2026-09-01.** The demo request posted a
+> `mailto:` at the visitor's own mail client, which meant it did not send so much
+> as *delegate*. It now POSTs to `api/demo.js`, a zero-dependency serverless
+> function that sends one email and keeps nothing.
+>
+> - **The recipient address left the client entirely.** It was base64 in the page
+>   — not visible, but recoverable by anyone reading the script. It now lives in
+>   `DEMO_TO` on the server and the page has no idea what it is. This is the first
+>   version where "do not show the address" is literally true rather than merely
+>   inconvenient to defeat.
+> - **A third state joined the slip.** Idle, sending, raised — and *failed*, which
+>   is the one that matters: a failure leaves every blank exactly as it was and
+>   puts the reason under the button in placard red, so retrying is one click and
+>   not five minutes of retyping. `.fi`'s error styling covers it unchanged.
+> - **Validation runs twice, on purpose.** The client validates so the visitor is
+>   told early; the server validates because the client is not the only thing that
+>   can POST there. The server also strips control characters from every value —
+>   a newline in a name is how a header gets forged — caps each field's length,
+>   and answers a filled honeypot with the same 200 a person gets.
+> - **The page's own copy was rewritten to match.** Four separate places told the
+>   reader their mail client would open and that nothing was transmitted. Both
+>   claims became false the moment this changed, and a page in this world does not
+>   get to be wrong about its own mechanism.
 
 **Scope.** This file records the visual system of the ReviewBot landing document:
 `index.html` (the overview, 8 sheets, mode Persuade), `demo.html` (the demo request,

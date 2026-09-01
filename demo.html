@@ -184,8 +184,8 @@
             <b>01</b>
             <div>
               <h2>You raise the slip</h2>
-              <p>The form opens your mail client with the request already written. Nothing is
-                sent from this page, and nothing is stored by it.</p>
+              <p>The slip is sent the moment you raise it. No mail client, no account,
+                and no copy kept on this page.</p>
             </div>
           </div>
           <div>
@@ -253,14 +253,22 @@
               </div>
             </div>
 
+            <!-- A blank no person sees and no browser autofills. Anything in it
+                 came from a bot, and the server answers a bot with the same 200
+                 a person gets so it learns nothing. -->
+            <div class="vh" aria-hidden="true">
+              <label for="q-company">Company</label>
+              <input id="q-company" name="company" type="text" tabindex="-1" autocomplete="off">
+            </div>
+
             <div class="req__foot">
               <button class="btn" type="submit" data-submit>
                 <span class="btn__go">Raise the request</span>
-                <span class="btn__wait">Composing&hellip;</span>
+                <span class="btn__wait">Sending&hellip;</span>
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
               </button>
-              <p class="req__hint">Opens your mail client with the request already written.
-                Nothing leaves this page on its own.</p>
+              <p class="req__hint">Sent straight to a person. Your address is used to
+                reply and for nothing else.</p>
             </div>
             <p class="fi__err" data-formerr style="margin-top:.9rem" role="alert"></p>
           </form>
@@ -269,15 +277,15 @@
             <div class="raised__stamp">
               <span class="stamp stamp--green">Request<br>raised<small>RB-DR/01 &middot; awaiting reply</small></span>
             </div>
-            <p class="body" style="font-size:.92rem">Your mail client should have opened with the
-              request written out. Send it as it stands, or add anything else you want us to look
-              at first &mdash; it comes to a person, not a queue.</p>
+            <p class="body" style="font-size:.92rem">It is on its way to a person, not a
+              queue. Replying to this slip means replying to you: the address below is where the
+              answer goes.</p>
             <div class="f"><span>Raised by</span><b data-echo-name>&mdash;</b></div>
             <div class="f"><span>Reply goes to</span><b class="pen" data-echo-mail>&mdash;</b></div>
             <div class="f"><span>Typical reply</span><b>within one working day</b></div>
-            <div class="raised__again">Nothing opened? Your browser may have no mail client
-              registered. <button type="button" data-again>Open it again</button> &mdash; or
-              raise the slip from a device that has one.</div>
+            <div class="raised__again">Nothing else to do. If you do not hear back within a
+              working day, <button type="button" data-again>raise it again</button> &mdash; a
+              duplicate is easier to deal with than a request that never arrived.</div>
           </div>
 
         </div>
@@ -292,10 +300,11 @@
       <span class="stencil">On what this page does with your details</span><hr>
       <span class="stencil">RB-DR/01</span>
     </div>
-    <p>This form has no server behind it. Nothing you type is transmitted, logged or stored by
-      this page &mdash; the button assembles the text into a message and hands it to whatever mail
-      client your device already has, which is the only thing that sends anything. Close the tab
-      before sending and the request simply never existed.</p>
+    <p>Raising the slip posts what you typed to one function on this site, which sends it on
+      as a single email and keeps nothing. There is no database, no analytics on this page and no
+      third party in the path beyond the mail provider that carries the message. Your address is
+      used to reply to you and for nothing else. Close the tab before you raise it and the request
+      simply never existed.</p>
   </div>
 </section>
 
@@ -358,12 +367,12 @@
   var formErr = document.querySelector('[data-formerr]');
   if (!form) return;
 
-  /* Held encoded, assembled only at the moment a request is actually raised,
-     so the address is never text on the page and never a harvestable href. */
-  var TO = 'c2hyZWV5YW5zaGRhczM0QGdtYWlsLmNvbQ==';
-  var lastHref = '';
-
+  /* The recipient address is not here, and there is nothing to obfuscate: it
+     lives in DEMO_TO on the server. The page posts the slip to its own origin
+     and never learns where the mail goes. */
+  var ENDPOINT = '/api/demo';
   var MAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  var last = null;
 
   function fieldOf(el) { return el.closest('[data-field]'); }
 
@@ -379,6 +388,10 @@
     if (ok) { f.removeAttribute('data-bad'); el.removeAttribute('aria-invalid'); }
     else    { f.setAttribute('data-bad', ''); el.setAttribute('aria-invalid', 'true'); }
   }
+  function say(msg) {
+    formErr.textContent = msg || '';
+    formErr.style.display = msg ? 'block' : 'none';
+  }
 
   /* Clear a complaint as soon as the blank is corrected, never re-raise one
      while somebody is still typing into it. */
@@ -387,30 +400,40 @@
     el.addEventListener('blur',  function () { if (el.value.trim() || el.hasAttribute('required')) mark(el, check(el)); });
   });
 
-  function compose(d) {
-    var subject = 'ReviewBot — demo request — ' + (d.org || d.name);
-    var body = [
-      'Demo request raised from the ReviewBot document.',
-      '',
-      'Name          ' + d.name,
-      'Email         ' + d.email,
-      'Organisation  ' + (d.org || '—'),
-      'Would run on  ' + d.repo,
-      '',
-      'What they want to see',
-      (d.note || '—'),
-      '',
-      '— RB-DR/01'
-    ].join('\n');
-    return 'mailto:' + atob(TO) +
-           '?subject=' + encodeURIComponent(subject) +
-           '&body='    + encodeURIComponent(body);
+  function raised(d) {
+    slip.querySelector('[data-echo-name]').textContent = d.name;
+    slip.querySelector('[data-echo-mail]').textContent = d.email;
+    slip.setAttribute('data-state', 'raised');
+    slip.querySelector('[data-raised]').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+
+  function send(d) {
+    last = d;
+    btn.setAttribute('data-busy', '');
+    say('');
+    return fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(d)
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) {
+        if (!r.ok) throw new Error(j.error || 'The request could not be sent. Try again shortly.');
+        return j;
+      });
+    }).then(function () {
+      btn.removeAttribute('data-busy');
+      raised(d);
+    }).catch(function (err) {
+      /* A failure leaves the slip exactly as it was, filled in, so the answer
+         to "try again" is one click and not five minutes of retyping. */
+      btn.removeAttribute('data-busy');
+      say(err && err.message ? err.message : 'The request could not be sent. Try again shortly.');
+    });
   }
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    formErr.style.display = 'none';
-    formErr.textContent = '';
+    say('');
 
     var els = [].slice.call(form.querySelectorAll('input, textarea'));
     var bad = null, n = 0;
@@ -422,34 +445,21 @@
     if (bad) {
       /* Count what is actually wrong. A summary that disagrees with the blanks
          it is summarising is worse than no summary. */
-      formErr.textContent = n === 1
-        ? 'One blank is still open on this slip.'
-        : n + ' blanks are still open on this slip.';
-      formErr.style.display = 'block';
+      say(n === 1 ? 'One blank is still open on this slip.'
+                  : n + ' blanks are still open on this slip.');
       bad.focus();
       return;
     }
 
     var d = {};
-    els.forEach(function (el) { d[el.name] = el.value.trim(); });
-
-    btn.setAttribute('data-busy', '');
-    lastHref = compose(d);
-    location.href = lastHref;
-
-    /* The mail client takes over the tab for a moment; the slip is stamped
-       once it has, so the receipt is what is waiting when they come back. */
-    setTimeout(function () {
-      btn.removeAttribute('data-busy');
-      slip.querySelector('[data-echo-name]').textContent = d.name;
-      slip.querySelector('[data-echo-mail]').textContent = d.email;
-      slip.setAttribute('data-state', 'raised');
-      slip.querySelector('[data-raised]').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-    }, 700);
+    els.forEach(function (el) { if (el.name) d[el.name] = el.value.trim(); });
+    send(d);
   });
 
   document.querySelector('[data-again]').addEventListener('click', function () {
-    if (lastHref) location.href = lastHref;
+    if (!last) return;
+    slip.removeAttribute('data-state');
+    send(last);
   });
 })();
 </script>
