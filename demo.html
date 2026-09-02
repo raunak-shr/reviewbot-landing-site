@@ -3,197 +3,175 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ReviewBot — Request a demo</title>
+<title>ReviewBot — request a demo</title>
 <meta name="description" content="Raise a request to see ReviewBot run against a real pull request on your own repository. Four fields, no account, no install.">
 <meta name="color-scheme" content="light">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null"
-      href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Azeret+Mono:wght@300..700&display=swap">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Azeret+Mono:wght@300..700&display=swap"></noscript>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2314161A'/%3E%3Cpath d='M9 12h14v10H9z' fill='none' stroke='%23ECEAE4' stroke-width='2.5'/%3E%3Cpath d='M16 6v6' stroke='%23ECEAE4' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='5' r='2.5' fill='%23B41E28'/%3E%3Cpath d='M12.5 16.5h2M17.5 16.5h2' stroke='%23ECEAE4' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
+      href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@500&display=swap">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@500&display=swap"></noscript>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23fc5000'/%3E%3Cpath d='M8.5 12.5h15v11h-15z' fill='none' stroke='%23070607' stroke-width='2.4'/%3E%3Cpath d='M16 6.4v6.1' stroke='%23070607' stroke-width='2.4'/%3E%3Ccircle cx='16' cy='5' r='2.6' fill='%23070607'/%3E%3Cpath d='M12.4 17.6h2.1M17.5 17.6h2.1' stroke='%23070607' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="base.css">
 </head>
 <body>
 <!--
-  SHEET-SET 3. One sheet, one job: raise a request against the service.
-  This is the first surface in the document with genuine form controls, so it is
-  where the system's missing input layer gets invented — in the ruled-line idiom
-  the rest of the log is written in, never an imported generic field. Everything
-  the visitor types is Ballpoint Blue, because a person wrote it by hand.
+  CALDERA — sheet 2 of 2: the demo request.
+
+  The form is the one place DESIGN.md puts an Obsidian section and a 100px pill
+  input, so that is exactly what this is: the slip lives on the dark surface,
+  in Chalk-outlined pill fields, with the Ember pill as the only filled control
+  on the sheet. The halftone appears once more as the confirmation surface, and
+  nowhere else.
+
+  Validation is done here rather than by the browser because a native
+  validation bubble is chrome this world has not themed — it would be the one
+  un-designed object on the page. Each blank says what is wrong with it, in
+  Ember, under the field it belongs to.
 -->
 <style>
-/* ═══ THE REQUEST SLIP ═════════════════════════════════════════════════════
-   Until now every field on this surface was a printed value. These are the
-   first blanks a person actually fills in, and they are drawn as blanks: a
-   stencilled label printed on the form, and a ruled line to write on. */
 
-.req{padding-block:clamp(2.2rem,5.4vw,4rem) clamp(3rem,6vw,5rem)}
-.req__grid{display:grid;gap:clamp(1.8rem,3.6vw,3rem);align-items:start}
+.req{padding-block:clamp(1.6rem,4vw,3rem) clamp(2.5rem,6vw,4rem)}
+.req__grid{display:grid;gap:clamp(1.5rem,4vw,3rem);align-items:start}
+@media (min-width:1000px){
+  .req__grid{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}
+}
 .req__grid>*{min-width:0}
-@media (min-width:960px){
-  .req__grid{grid-template-columns:minmax(0,1fr) minmax(420px,.94fr);
-    column-gap:clamp(2rem,4.6vw,3.6rem)}
-  .req__slip{align-self:start}
-}
-.req .lede{margin-top:clamp(1.1rem,2.2vw,1.5rem)}
 
-/* What happens after the slip is raised. A ruled list, flush left, padded off
-   every rule it follows — the corrected Flush-Left Rule. */
-.steps{display:grid;gap:0;margin-top:clamp(1.8rem,3.4vw,2.6rem);
-  border-top:var(--hair) solid var(--rule-2)}
-.steps>div{display:grid;grid-template-columns:2.1rem minmax(0,1fr);
-  gap:0 .3rem;padding:.95rem 1rem .95rem 0;
-  border-bottom:var(--hair) solid var(--rule)}
-.steps>div:last-child{border-bottom:0}
-.steps b{font-family:var(--mono);font-size:.78rem;color:var(--ink-3);
-  font-weight:500;padding-top:.1rem}
-.steps h2{font-variation-settings:'wdth' 100,'wght' 680;font-size:.96rem;
-  letter-spacing:-.01em;margin-bottom:.22rem}
-.steps p{font-size:.86rem;line-height:1.5;color:var(--ink-2);max-width:52ch}
+/* The three steps, on dotted rules. */
+.steps{display:grid;gap:0;margin-top:clamp(1.6rem,3.4vw,2.4rem)}
+.steps>div{display:grid;grid-template-columns:auto 1fr;gap:0 1rem;
+  padding:1.1rem 0;border-top:var(--hair) dotted #07060742}
+.steps>div:last-child{border-bottom:var(--hair) dotted #07060742}
+/* Ember numerals on Pumice measure 2.57:1. Inverted the same way the hero's
+   accent word is: an Ember pill with Obsidian digits, which is 5.99:1. */
+.steps b{font-family:var(--f-display);font-weight:400;font-size:1.35rem;
+  letter-spacing:.04em;line-height:1;color:var(--obsidian);
+  background:var(--ember);border-radius:var(--r-pill);
+  padding:.28em .5em .22em;align-self:start}
+.steps h2{font-family:var(--f-display);font-weight:400;font-size:var(--t-sub);
+  letter-spacing:.02em;line-height:1.14;margin-bottom:.3rem}
+.steps p{font-size:var(--t-sm);line-height:1.55;color:var(--ink-2);max-width:50ch}
 
-/* ── The writable field ───────────────────────────────────────────────────
-   A blank on a form: the label is printed, the line is what you write on, and
-   what you write is Ballpoint Blue because a person put it there. No box, no
-   radius, no fill — the rule under the line is the whole control. */
-.fi{display:flex;flex-direction:column;gap:.22rem;min-width:0}
-.fi>label{color:var(--ink-3);font-variation-settings:'wdth' 74,'wght' 700;
-  letter-spacing:.12em;text-transform:uppercase;font-size:.7rem;
-  display:flex;align-items:baseline;gap:.5rem}
-.fi>label i{font-style:normal;font-variation-settings:'wdth' 76,'wght' 500;
-  letter-spacing:.08em;color:var(--ink-3);margin-left:auto;opacity:.82}
-.fi input,.fi textarea{
-  font-family:var(--mono);font-size:.82rem;font-weight:500;letter-spacing:-.02em;
-  color:var(--pen);background:transparent;
-  border:0;border-bottom:var(--hair) solid var(--rule);border-radius:0;
-  padding:.3rem 0 .28rem;width:100%;min-width:0;
-  transition:border-color .2s var(--e-io),background .2s var(--e-io)}
-.fi textarea{resize:vertical;min-height:5.2rem;line-height:1.6}
-.fi input::placeholder,.fi textarea::placeholder{
-  color:var(--ink-3);font-family:var(--sans);font-variation-settings:'wdth' 100,'wght' 400;
-  letter-spacing:0;opacity:1}
-/* A person writing in the blank presses harder on the line. */
-.fi input:hover,.fi textarea:hover{border-bottom-color:var(--rule-2)}
-.fi input:focus,.fi textarea:focus{border-bottom-color:var(--pen);
-  border-bottom-width:1.5px;padding-bottom:calc(.28rem - .5px)}
-/* Error is a placard state, so it is placard red — and it says what is wrong,
-   never just that something is. */
-.fi input[aria-invalid="true"],.fi textarea[aria-invalid="true"]{
-  border-bottom-color:var(--red);border-bottom-width:1.5px;
-  padding-bottom:calc(.28rem - .5px);
-  background:linear-gradient(var(--red-wash),var(--red-wash))}
-.fi__err{display:none;color:var(--red);font-variation-settings:'wdth' 76,'wght' 700;
-  letter-spacing:.08em;text-transform:uppercase;font-size:.66rem;line-height:1.3;
-  margin-top:.28rem}
-.fi[data-bad] .fi__err{display:block}
-/* Nothing on this form is disabled at rest, but the state has to exist before
-   somebody needs it: a blank that cannot be written in is a printed value. */
-.fi input:disabled,.fi textarea:disabled{
-  color:var(--ink-3);background:var(--paper-lo);
-  border-bottom-style:dashed;cursor:not-allowed}
-
-.req__fields{display:grid;gap:1.1rem 1.1rem}
-@media (min-width:520px){.req__two{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.req__two{display:grid;gap:1.1rem 1.1rem}
-/* The last blank ends on its own writing line; the action row opens on a
-   heavier one. Two rules that close together read as one doubled rule. */
-.req__foot{margin-top:1.9rem;padding-top:1.1rem;
-  border-top:var(--hair) solid var(--rule-2);display:flex;flex-wrap:wrap;
-  gap:.8rem;align-items:center}
-.req__foot .btn{flex:none}
-.req__hint{font-size:.76rem;line-height:1.45;color:var(--ink-3);max-width:34ch}
-@media (max-width:460px){
-  .req__foot .btn{flex:1 1 100%;justify-content:center}
-  .req__hint{max-width:none}
-}
-/* The button spends a moment composing the mail. It says so rather than
-   going dead. */
-.btn[data-busy]{pointer-events:none;opacity:.72}
-.btn[data-busy] .btn__go{display:none}
-.btn .btn__wait{display:none}
-.btn[data-busy] .btn__wait{display:inline}
-
-/* ── Raised ───────────────────────────────────────────────────────────────
-   The slip is stamped and the form is replaced by its own receipt. Released
-   green, because the request has gone. */
+/* ═══ THE SLIP ════════════════════════════════════════════════════════════
+   Obsidian surface, Chalk pill inputs at 100px — the one dark input section
+   the system allows, used for the one form in the document. */
+.slip{border-radius:var(--r-card);overflow:hidden}
+.slip__body{padding:clamp(1.2rem,3vw,2.2rem)}
+.slip[data-state="raised"] .slip__form{display:none}
 .raised{display:none}
-[data-state="raised"] .req__form{display:none}
-[data-state="raised"] .raised{display:block}
-.raised__stamp{display:flex;justify-content:flex-end;margin-bottom:.9rem}
-.raised .f{margin-top:.9rem}
-.raised__again{margin-top:1.2rem;padding-top:1rem;
-  border-top:var(--hair) dashed var(--rule);font-size:.8rem;line-height:1.5;
-  color:var(--ink-2)}
-.raised__again button{font-family:var(--mono);font-size:.8rem;color:var(--pen);
-  border-bottom:var(--hair) solid var(--pen);padding-bottom:1px;
-  transition:color .2s,border-color .2s}
-.raised__again button:hover{color:var(--red);border-bottom-color:var(--red)}
+.slip[data-state="raised"] .raised{display:grid;gap:1rem}
 
-.xnote{border-top:2px solid var(--ink);padding-block:clamp(2rem,4vw,3rem);
-  font-size:.84rem;line-height:1.6;color:var(--ink-2);max-width:78ch}
+.fields-form{display:grid;gap:.9rem}
+.two{display:grid;gap:.9rem}
+@media (min-width:640px){.two{grid-template-columns:1fr 1fr}}
+
+.fi{display:grid;gap:.4rem}
+.fi label{font-size:var(--t-caption);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--on-dark-2);display:flex;gap:.5rem;align-items:baseline}
+.fi label i{font-style:normal;letter-spacing:.06em;color:var(--on-dark-3);
+  text-transform:none}
+.fi input,.fi textarea{
+  width:100%;background:#0000;color:var(--chalk);
+  border:var(--hair) solid var(--chalk);border-radius:var(--r-input);
+  padding:.95rem 1.4rem;font-size:var(--t-body);line-height:1.4;
+  transition:border-color .18s var(--e-io),background .18s var(--e-io)}
+.fi textarea{border-radius:var(--r-med);resize:vertical;min-height:5.5rem;
+  font-family:inherit}
+.fi input::placeholder,.fi textarea::placeholder{color:var(--on-dark-3)}
+.fi input:hover,.fi textarea:hover{background:#ffffff0a}
+.fi input:focus,.fi textarea:focus{outline:none;border-color:var(--sulfur);
+  background:#ffffff0f}
+.fi input:focus-visible,.fi textarea:focus-visible{outline:2.5px solid var(--sulfur);
+  outline-offset:2px}
+.fi__err{display:none;font-size:var(--t-caption);line-height:1.4;
+  color:var(--ember);padding-left:1.4rem}
+.fi[data-bad] input,.fi[data-bad] textarea{border-color:var(--ember)}
+.fi[data-bad] .fi__err{display:block}
+
+.slip__foot{display:flex;flex-wrap:wrap;gap:.9rem 1.2rem;align-items:center;
+  margin-top:1.4rem;padding-top:1.2rem;
+  border-top:var(--hair) dotted var(--dark-line)}
+.slip__hint{font-size:var(--t-caption);line-height:1.5;color:var(--on-dark-3);
+  max-width:34ch}
+[data-submit] .btn__wait{display:none}
+[data-submit][data-busy] .btn__go{display:none}
+[data-submit][data-busy] .btn__wait{display:inline}
+[data-submit][data-busy]{pointer-events:none;opacity:.75}
+[data-formerr]{display:none;margin-top:1rem;font-size:var(--t-sm);color:var(--ember)}
+
+/* The confirmation. The halftone's second and last appearance. */
+.raised__mark{border-radius:var(--r-med);padding:clamp(1.1rem,2.6vw,1.6rem);
+  display:grid;gap:.35rem}
+.raised__mark b{font-family:var(--f-display);font-weight:400;
+  font-size:clamp(1.9rem,4.4vw,2.6rem);letter-spacing:.02em;line-height:1;
+  color:var(--chalk)}
+.raised__mark span{font-size:var(--t-caption);letter-spacing:.13em;
+  text-transform:uppercase;color:var(--chalk)}
+.raised__again{font-size:var(--t-caption);line-height:1.55;color:var(--on-dark-3);
+  border-top:var(--hair) dotted var(--dark-line);padding-top:.9rem}
+.raised__again button{color:var(--sulfur);text-decoration:underline;
+  text-underline-offset:2px;font-size:inherit}
+
+.xnote p{font-size:var(--t-sm);line-height:1.7;max-width:80ch;color:var(--ink-2)}
 </style>
 
-<a class="skip" href="#slip">Skip to the request</a>
+<a class="skip" href="#main">Skip to the request</a>
 
 <header class="mast" id="mast">
-  <div class="wrap mast__in">
-    <a class="brand" href="index.html" aria-label="ReviewBot — the overview sheet">
-      <svg viewBox="0 0 32 32" aria-hidden="true">
-        <rect x=".75" y=".75" width="30.5" height="30.5" fill="#16171A"/>
-        <path d="M8.5 12.5h15v11h-15z" fill="none" stroke="#ECEAE4" stroke-width="2.2"/>
-        <path d="M16 6.5v6" stroke="#ECEAE4" stroke-width="2.2"/>
-        <circle cx="16" cy="5" r="2.6" fill="#B41E28"/>
-        <path d="M12.4 17.6h2.1M17.5 17.6h2.1" stroke="#ECEAE4" stroke-width="2.2" stroke-linecap="round"/>
-        <path d="M5.5 15.5v5M26.5 15.5v5" stroke="#ECEAE4" stroke-width="2.2" stroke-linecap="round"/>
-      </svg>
-      <b>ReviewBot</b>
-    </a>
-    <div class="mast__meta" aria-hidden="true">
-      <div class="f"><span>Document</span><b>Demo request</b></div>
-      <div class="f"><span>Form</span><b>RB-DR/01 · rev 0.5</b></div>
-    </div>
-    <nav class="mast__nav" aria-label="Sheets">
-      <a class="mast__nav-x" href="index.html">The overview
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+  <div class="wrap">
+    <div class="mast__in">
+      <a class="brand" href="index.html" aria-label="ReviewBot — the overview sheet">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="8" fill="#fc5000"/>
+          <path d="M8.5 12.5h15v11h-15z" fill="none" stroke="#070607" stroke-width="2.2"/>
+          <path d="M16 6.4v6.1" stroke="#070607" stroke-width="2.2"/>
+          <circle cx="16" cy="5" r="2.5" fill="#070607"/>
+          <path d="M12.4 17.6h2.1M17.5 17.6h2.1" stroke="#070607" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M5.6 15.6v4.8M26.4 15.6v4.8" stroke="#070607" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+        <b>ReviewBot</b>
       </a>
-    </nav>
-    <div class="mast__prog" aria-hidden="true"></div>
+      <!-- One way back, not two: a nav list of one item next to a back link
+           that goes to the same sheet was two links doing one job. -->
+      <a class="glink mast__cta" href="index.html" style="padding-right:.4rem">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5"/></svg>
+        Back to the document
+      </a>
+      <div class="mast__prog" aria-hidden="true"></div>
+    </div>
   </div>
 </header>
 
 <main id="main">
-<section class="req sheet" id="slip" aria-labelledby="h-req">
-  <div class="punches" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+<section class="req" id="slip" aria-labelledby="h-req">
   <div class="wrap">
-    <div class="rulebar">
-      <span class="stencil">Demo request</span><hr>
-      <span class="stencil">Sheet 1 of 1</span>
-    </div>
+    <div class="bar"><span class="label">Demo request</span><hr class="rule"><span class="label">RB-DR/01 &middot; sheet 1 of 1</span></div>
 
     <div class="req__grid">
       <div>
-        <h1 class="d1" id="h-req">See it hold a real merge.</h1>
-        <p class="lede">A demo is one pull request on one of your own repositories, reviewed
-          end to end: the findings it raises, the ones it suppresses and why, the check going
-          red, and the merge released on a signature.</p>
-        <p class="lede" style="margin-top:.9rem">Four fields. No account, no install, and
-          nothing runs against your code until you say so.</p>
+        <h1 class="d1" id="h-req">See it hold a real merge</h1>
+        <p class="lede mt">A demo is one pull request on one of your own repositories, reviewed
+          end to end: the findings it raises, the ones it suppresses and why, the check going red,
+          and the merge released on a signature.</p>
+        <p class="lede" style="margin-top:.9rem">Four fields. No account, no install, and nothing
+          runs against your code until you say so.</p>
 
         <div class="steps">
           <div>
             <b>01</b>
             <div>
               <h2>You raise the slip</h2>
-              <p>The slip is sent the moment you raise it. No mail client, no account,
-                and no copy kept on this page.</p>
+              <p>The slip is sent the moment you raise it. No mail client, no account, and no copy
+                kept on this page.</p>
             </div>
           </div>
           <div>
             <b>02</b>
             <div>
               <h2>We agree a repository and a window</h2>
-              <p>Read access to one repository, for as long as the demo runs. A fork or a
-                scratch copy is fine and is what most people pick.</p>
+              <p>Read access to one repository, for as long as the demo runs. A fork or a scratch
+                copy is fine and is what most people pick.</p>
             </div>
           </div>
           <div>
@@ -207,16 +185,16 @@
         </div>
       </div>
 
-      <div class="form req__slip" data-slip>
-        <div class="form__head">
-          <span class="form__title">Request for demonstration</span>
-          <span class="form__serial">RB-DR/01</span>
+      <div class="slip band-dark dots-dark" data-slip>
+        <div class="panel__head">
+          <span class="label">Request for demonstration</span>
+          <span class="label label--quiet">RB-DR/01</span>
         </div>
-        <div class="form__body">
+        <div class="slip__body">
 
-          <form class="req__form" novalidate data-form>
-            <div class="req__fields">
-              <div class="req__two">
+          <form class="slip__form" novalidate data-form>
+            <div class="fields-form">
+              <div class="two">
                 <div class="fi" data-field>
                   <label for="q-name">Your name</label>
                   <input id="q-name" name="name" type="text" autocomplete="name"
@@ -261,31 +239,33 @@
               <input id="q-company" name="company" type="text" tabindex="-1" autocomplete="off">
             </div>
 
-            <div class="req__foot">
+            <div class="slip__foot">
               <button class="btn" type="submit" data-submit>
                 <span class="btn__go">Raise the request</span>
                 <span class="btn__wait">Sending&hellip;</span>
-                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
               </button>
-              <p class="req__hint">Sent straight to a person. Your address is used to
-                reply and for nothing else.</p>
+              <p class="slip__hint">Sent straight to a person. Your address is used to reply and
+                for nothing else.</p>
             </div>
-            <p class="fi__err" data-formerr style="margin-top:.9rem" role="alert"></p>
+            <p data-formerr role="alert"></p>
           </form>
 
           <div class="raised" data-raised role="status">
-            <div class="raised__stamp">
-              <span class="stamp stamp--green">Request<br>raised<small>RB-DR/01 &middot; awaiting reply</small></span>
+            <div class="raised__mark halftone">
+              <b>Request raised</b>
+              <span>RB-DR/01 &middot; awaiting reply</span>
             </div>
-            <p class="body" style="font-size:.92rem">It is on its way to a person, not a
-              queue. Replying to this slip means replying to you: the address below is where the
-              answer goes.</p>
-            <div class="f"><span>Raised by</span><b data-echo-name>&mdash;</b></div>
-            <div class="f"><span>Reply goes to</span><b class="pen" data-echo-mail>&mdash;</b></div>
-            <div class="f"><span>Typical reply</span><b>within one working day</b></div>
-            <div class="raised__again">Nothing else to do. If you do not hear back within a
-              working day, <button type="button" data-again>raise it again</button> &mdash; a
-              duplicate is easier to deal with than a request that never arrived.</div>
+            <p class="small">It is on its way to a person, not a queue. Replying to this slip
+              means replying to you: the address below is where the answer goes.</p>
+            <div class="fields">
+              <div><span>Raised by</span><b data-echo-name>&mdash;</b></div>
+              <div><span>Reply goes to</span><b data-echo-mail>&mdash;</b></div>
+              <div><span>Typical reply</span><b>within one working day</b></div>
+            </div>
+            <p class="raised__again">Nothing else to do. If you do not hear back within a working
+              day, <button type="button" data-again>raise it again</button> &mdash; a duplicate is
+              easier to deal with than a request that never arrived.</p>
           </div>
 
         </div>
@@ -294,72 +274,60 @@
   </div>
 </section>
 
-<section class="xnote">
+<section class="sec xnote">
   <div class="wrap">
-    <div class="rulebar">
-      <span class="stencil">On what this page does with your details</span><hr>
-      <span class="stencil">RB-DR/01</span>
-    </div>
-    <p>Raising the slip posts what you typed to one function on this site, which sends it on
-      as a single email and keeps nothing. There is no database, no analytics on this page and no
-      third party in the path beyond the mail provider that carries the message. Your address is
-      used to reply to you and for nothing else. Close the tab before you raise it and the request
-      simply never existed.</p>
+    <div class="bar"><span class="label">On what this page does with your details</span><hr class="rule"><span class="label">RB-DR/01</span></div>
+    <p>Raising the slip posts what you typed to one function on this site, which sends it on as a
+      single email and keeps nothing. There is no database, no analytics on this page and no third
+      party in the path beyond the mail provider that carries the message. Your address is used to
+      reply to you and for nothing else. Close the tab before you raise it and the request simply
+      never existed.</p>
   </div>
 </section>
 
 <footer class="foot">
   <div class="wrap">
-    <div class="foot__brand">
-      <div>
-        <a class="brand" href="index.html" style="margin-bottom:.8rem" aria-label="ReviewBot — the overview sheet">
-          <svg viewBox="0 0 32 32" aria-hidden="true">
-            <rect x=".75" y=".75" width="30.5" height="30.5" fill="#16171A"/>
-            <path d="M8.5 12.5h15v11h-15z" fill="none" stroke="#ECEAE4" stroke-width="2.2"/>
-            <path d="M16 6.5v6" stroke="#ECEAE4" stroke-width="2.2"/>
-            <circle cx="16" cy="5" r="2.6" fill="#B41E28"/>
-            <path d="M12.4 17.6h2.1M17.5 17.6h2.1" stroke="#ECEAE4" stroke-width="2.2" stroke-linecap="round"/>
-            <path d="M5.5 15.5v5M26.5 15.5v5" stroke="#ECEAE4" stroke-width="2.2" stroke-linecap="round"/>
-          </svg>
-          <b>ReviewBot</b>
-        </a>
-        <p style="max-width:54ch">Scheduled multi-agent code review, running as a GitHub App. It
-          reads the diff, holds the merge on a major finding, and releases it on a named
-          developer's signature.</p>
-      </div>
-    </div>
-    <p class="foot__note">Sample data on the other sheets of this document &mdash; pull requests,
+    <a class="brand" href="index.html" style="margin-bottom:.9rem" aria-label="ReviewBot — the overview sheet">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="#fc5000"/>
+        <path d="M8.5 12.5h15v11h-15z" fill="none" stroke="#070607" stroke-width="2.2"/>
+        <path d="M16 6.4v6.1" stroke="#070607" stroke-width="2.2"/>
+        <circle cx="16" cy="5" r="2.5" fill="#070607"/>
+        <path d="M12.4 17.6h2.1M17.5 17.6h2.1" stroke="#070607" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M5.6 15.6v4.8M26.4 15.6v4.8" stroke="#070607" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+      <b>ReviewBot</b>
+    </a>
+    <p style="max-width:56ch">Scheduled multi-agent code review, running as a GitHub App. It reads
+      the diff, holds the merge on a major finding, and releases it on a named
+      developer&rsquo;s signature.</p>
+    <p class="foot__note">Sample data on the other sheet of this document &mdash; pull requests,
       finding references, diffs, developer names, timestamps and confidence values &mdash; is
-      written to demonstrate the mechanism. The behaviour it illustrates is the specified
-      behaviour of the service. No accuracy, adoption, performance or cost figure is claimed
-      anywhere in this document, because none has been measured yet.</p>
+      written to demonstrate the mechanism. The behaviour it illustrates is the specified behaviour
+      of the service. No accuracy, adoption, performance or cost figure is claimed anywhere in this
+      document, because none has been measured yet.</p>
   </div>
 </footer>
 </main>
 
 <script>
-/* The masthead's two behaviours, and nothing else: this sheet has no scenes.
-   One rAF loop, one write path, same contract as the other two sheets. */
+/* The masthead's one behaviour, and nothing else: this sheet has no scenes.
+   One rAF loop, one write path, same contract as the overview. */
 (function () {
-  var mast = document.getElementById('mast'), root = document.documentElement;
-  var last = -1, stuck = false, ticking = false;
+  var root = document.documentElement, last = -1, ticking = false;
   function frame() {
     ticking = false;
     var max = Math.max(1, root.scrollHeight - innerHeight);
     var d = Math.min(1, Math.max(0, scrollY / max)).toFixed(4);
     if (d !== last) { root.style.setProperty('--doc', d); last = d; }
-    var s = scrollY > 8;
-    if (s !== stuck) { stuck = s; s ? mast.setAttribute('data-stuck', '') : mast.removeAttribute('data-stuck'); }
   }
-  addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }, { passive: true });
+  addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(frame); }
+  }, { passive: true });
   frame();
 })();
 
-/* ── The slip ──────────────────────────────────────────────────────────────
-   Validation is done here rather than by the browser because a native
-   validation bubble is a browser surface this world has not themed, and it
-   would be the one un-designed object on the page. Each blank says what is
-   wrong with it, on its own rule, in placard red. */
+/* ── The slip ─────────────────────────────────────────────────────────────── */
 (function () {
   var slip = document.querySelector('[data-slip]');
   var form = document.querySelector('[data-form]');
@@ -396,8 +364,13 @@
   /* Clear a complaint as soon as the blank is corrected, never re-raise one
      while somebody is still typing into it. */
   form.querySelectorAll('input, textarea').forEach(function (el) {
-    el.addEventListener('input', function () { if (fieldOf(el) && fieldOf(el).hasAttribute('data-bad')) mark(el, check(el)); });
-    el.addEventListener('blur',  function () { if (el.value.trim() || el.hasAttribute('required')) mark(el, check(el)); });
+    el.addEventListener('input', function () {
+      var f = fieldOf(el);
+      if (f && f.hasAttribute('data-bad')) mark(el, check(el));
+    });
+    el.addEventListener('blur', function () {
+      if (el.value.trim() || el.hasAttribute('required')) mark(el, check(el));
+    });
   });
 
   function raised(d) {

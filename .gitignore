@@ -40,3 +40,9 @@ $RECYCLE.BIN/
 
 # Impeccable working artifacts (config and direction stay tracked)
 .impeccable/
+
+# Large local recording (152MB) — exceeds GitHub's 100MB file limit
+docs/ReviewBot_-_Product_Demo.gif
+
+# Local export
+caldera.zip
