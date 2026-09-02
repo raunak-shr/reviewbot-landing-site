@@ -10,18 +10,42 @@ index.html   the overview — 8 sheets, the argument and the demo run
 demo.html    the demo request — 1 sheet, the request slip
 base.css     the shared design system: tokens, type, components, chrome
 app.js       one requestAnimationFrame loop; every scroll-linked behaviour
-DESIGN.md    the visual system as built, and where it is thin
+DESIGN.md    the Caldera style reference this document is built to
 api/demo.js  the one non-static thing: sends the demo request
+docs/        the product notes
 ```
 
 `base.css` is the single source of truth for tokens and shared components. Each
 page keeps an inline `<style>` block for what only it uses.
+
+## The design
+
+Caldera, built to `DESIGN.md`: a warm limestone canvas flooded with a
+single molten orange, ultrabold compressed type from 26px to 189px carrying all
+the structural weight, three radii (100 / 40 / 800), 1.5px dotted rules, and a
+violet halftone used exactly twice — the hero block and the certificate. Flat
+throughout; nothing on either sheet casts a shadow.
+
+`DESIGN.md` is the style reference. Where the build departs from it — state
+spelled in four surfaces rather than four hues, Ember and Chalk swapping roles
+at small sizes, a system monospace for code — the reason is recorded in the
+comment at the top of `base.css` and beside the rule it affects. The previous
+iteration, carbonless form paper in Archivo and Azeret Mono, is in the git
+history at `a329eee` and earlier.
 
 ## Viewing it
 
 ```bash
 python -m http.server 8791 --directory .
 # then open http://127.0.0.1:8791/
+```
+
+Note: on some machines the stock single-threaded `http.server` stalls Chrome
+part-way through a long HTML response. If a sheet renders half-finished, use a
+threading server instead:
+
+```bash
+python -c "from http.server import SimpleHTTPRequestHandler as H, ThreadingHTTPServer as S; S(('127.0.0.1',8791), H).serve_forever()"
 ```
 
 ## Deploying
